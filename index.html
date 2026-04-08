@@ -1,14 +1,14 @@
 ```html
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Personalizada para Liss - Hipertrofia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>App Liss - Hipertrofia</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     
@@ -16,493 +16,603 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Montserrat', 'sans-serif'],
-                        heading: ['Oswald', 'sans-serif'],
-                    },
+                    fontFamily: { sans: ['Montserrat', 'sans-serif'], heading: ['Oswald', 'sans-serif'] },
                     colors: {
-                        crimson: {
-                            500: '#e11d48',
-                            600: '#be123c',
-                            700: '#9f1239',
-                            900: '#4c0519',
-                        },
-                        dark: {
-                            900: '#0a0a0a',
-                            800: '#171717',
-                            700: '#262626',
-                        }
+                        brand: { 500: '#e11d48', 600: '#be123c', 700: '#9f1239', 900: '#4c0519' },
+                        dark: { 900: '#0a0a0a', 800: '#171717', 700: '#262626', 600: '#404040' }
                     }
                 }
             }
         }
     </script>
     <style>
-        body {
-            background-color: #0a0a0a;
-            color: #f5f5f5;
-        }
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #171717; 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #be123c; 
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #e11d48; 
-        }
+        body { background-color: #0a0a0a; color: #f5f5f5; overscroll-behavior-y: none; }
         
-        .tab-content {
-            display: none;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 0.4s ease, transform 0.4s ease;
-        }
-        .tab-content.active {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
-        }
+        /* Ocultar scrollbar para que parezca app nativa */
+        ::-webkit-scrollbar { width: 0px; background: transparent; }
 
-        .exercise-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .exercise-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px -5px rgba(190, 18, 60, 0.4);
-        }
+        .card { background: #171717; border: 1px solid #262626; border-radius: 16px; padding: 1.5rem; }
+        .input-field { background: #0a0a0a; border: 1px solid #262626; color: white; padding: 0.75rem 1rem; border-radius: 8px; width: 100%; transition: border 0.3s; }
+        .input-field:focus { outline: none; border-color: #e11d48; }
+        .btn-primary { background: #be123c; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; text-align: center; cursor: pointer; transition: background 0.3s, transform 0.1s; width: 100%; display: inline-flex; justify-content: center; align-items: center; gap: 0.5rem; }
+        .btn-primary:active { transform: scale(0.95); }
+        .btn-secondary { background: #262626; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; text-align: center; cursor: pointer; transition: background 0.3s; border: 1px solid #404040; width: 100%; display: inline-flex; justify-content: center; align-items: center; gap: 0.5rem; }
+        .btn-secondary:active { transform: scale(0.95); }
+
+        /* Gráfico Circular */
+        .donut-chart { width: 200px; height: 200px; border-radius: 50%; background: conic-gradient(#e11d48 0% 35%, #94a3b8 35% 75%, #475569 75% 100%); display: flex; align-items: center; justify-content: center; margin: 0 auto; }
+        .donut-inner { width: 160px; height: 160px; background-color: #171717; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+
+        /* Vistas de la App */
+        .app-view { display: none; animation: fadeIn 0.3s ease; padding-bottom: 6rem; }
+        .app-view.active { display: block; }
+        
+        /* Pestañas de Entrenamiento */
+        .tab-content { display: none; animation: fadeIn 0.4s ease; }
+        .tab-content.active { display: block; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Tarjetas de Ejercicios (Restauradas) */
+        .exercise-card { transition: transform 0.3s ease; }
+        .exercise-card:active { transform: scale(0.98); border-color: #be123c; }
+
+        /* Toast */
+        #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px); background: #e11d48; color: white; padding: 0.75rem 1.5rem; border-radius: 50px; font-weight: bold; transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 1000; box-shadow: 0 10px 25px rgba(225,29,72,0.5); font-size: 0.875rem; white-space: nowrap;}
+        #toast.show { transform: translateX(-50%) translateY(0); }
+
+        /* Bottom Navigation Bar */
+        .nav-item { flex: 1; display: flex; flex-direction: column; items-center: center; justify-content: center; padding: 0.5rem 0; color: #a1a1aa; font-size: 0.7rem; font-weight: 500; transition: color 0.2s; position: relative; text-align: center; cursor: pointer; -webkit-tap-highlight-color: transparent;}
+        .nav-item .icon { font-size: 1.25rem; margin-bottom: 0.25rem; }
+        .nav-item.active { color: #e11d48; }
+        .nav-item.active::before { content: ''; position: absolute; top: 0; left: 10%; right: 10%; height: 3px; background-color: #e11d48; border-radius: 0 0 4px 4px; }
     </style>
 </head>
-<body class="antialiased selection:bg-crimson-600 selection:text-white">
+<body class="antialiased selection:bg-brand-600 selection:text-white">
 
-    <!-- Header / Nav -->
-    <nav class="fixed w-full z-50 bg-dark-900/90 backdrop-blur-md border-b border-crimson-900/50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
-                <div class="flex items-center gap-3">
-                    <i data-lucide="activity" class="text-crimson-500 w-8 h-8"></i>
-                    <span class="font-heading font-bold text-2xl tracking-wider text-white uppercase">Liss<span class="text-crimson-500">Training</span></span>
+    <!-- Toast de Notificaciones -->
+    <div id="toast" class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4"></i> <span id="toast-msg">Mensaje</span></div>
+
+    <!-- Header Principal (Fijo) -->
+    <header class="bg-dark-900/90 backdrop-blur-md border-b border-dark-700 sticky top-0 z-40 p-4">
+        <div class="max-w-3xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <i data-lucide="dumbbell" class="text-brand-500 w-6 h-6"></i>
+                <span class="font-heading font-bold text-xl tracking-wider uppercase">Liss<span class="text-brand-500">App</span></span>
+            </div>
+            <div class="w-8 h-8 rounded-full bg-brand-600 border-2 border-brand-500 flex items-center justify-center font-bold text-sm shadow-[0_0_10px_rgba(225,29,72,0.4)]">L</div>
+        </div>
+    </header>
+
+    <!-- CONTENEDOR PRINCIPAL DE LAS VISTAS -->
+    <main class="max-w-3xl mx-auto px-4 pt-6">
+
+        <!-- ========================= -->
+        <!-- 1. VISTA: RESUMEN (Dashboard) -->
+        <!-- ========================= -->
+        <div id="view-resumen" class="app-view active space-y-6">
+            <div class="text-center space-y-1">
+                <h1 class="text-2xl font-heading font-bold text-white">Tu Panel de Control</h1>
+                <p class="text-gray-400 text-xs">Resumen de tus objetivos y estado actual.</p>
+            </div>
+
+            <section class="card space-y-6 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-brand-600/10 rounded-full blur-3xl"></div>
+                <div class="text-center">
+                    <i data-lucide="activity" class="w-10 h-10 text-gray-500 mx-auto mb-2"></i>
+                    <h2 class="font-heading text-2xl font-bold tracking-widest uppercase text-white">LISS</h2>
+                    <p class="text-brand-500 font-bold text-xs">NO PAIN NO GAIN</p>
                 </div>
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-8">
-                        <a href="#inicio" class="hover:text-crimson-500 px-3 py-2 rounded-md text-sm font-semibold transition-colors">Inicio</a>
-                        <a href="#metodologia" class="hover:text-crimson-500 px-3 py-2 rounded-md text-sm font-semibold transition-colors">Metodología</a>
-                        <a href="#rutina" class="bg-crimson-600 hover:bg-crimson-500 text-white px-5 py-2 rounded-full text-sm font-bold shadow-[0_0_15px_rgba(225,29,72,0.4)] transition-all">Ver Rutina</a>
+
+                <div class="border-t border-b border-dark-700 py-3 text-center">
+                    <p class="text-gray-400 text-xs mb-1">Objetivo Actual</p>
+                    <p class="font-bold text-base">Hipertrofia Muscular (Ganancia Limpia).</p>
+                </div>
+
+                <div class="py-4">
+                    <div class="donut-chart">
+                        <div class="donut-inner">
+                            <span class="text-3xl font-heading font-bold">2270</span>
+                            <span class="text-xs text-gray-400">kcal/día</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-center items-center gap-4 mt-6 text-xs font-bold">
+                        <div class="flex items-center gap-1"><div class="w-3 h-1 bg-[#e11d48]"></div> Proteína</div>
+                        <div class="flex items-center gap-1"><div class="w-3 h-1 bg-[#94a3b8]"></div> Carbs</div>
+                        <div class="flex items-center gap-1"><div class="w-3 h-1 bg-[#475569]"></div> Grasas</div>
                     </div>
                 </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-dark-900 p-3 rounded-xl border border-dark-700 text-center"><p class="text-gray-400 text-xs mb-1">Calorías Totales</p><p class="text-lg font-bold">2270</p></div>
+                    <div class="bg-dark-900 p-3 rounded-xl border border-dark-700 text-center"><p class="text-gray-400 text-xs mb-1">Proteínas</p><p class="text-lg font-bold text-brand-500">225g</p></div>
+                    <div class="bg-dark-900 p-3 rounded-xl border border-dark-700 text-center"><p class="text-gray-400 text-xs mb-1">Carbs</p><p class="text-lg font-bold text-gray-300">200g</p></div>
+                    <div class="bg-dark-900 p-3 rounded-xl border border-dark-700 text-center"><p class="text-gray-400 text-xs mb-1">Grasas</p><p class="text-lg font-bold text-gray-400">63g</p></div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ========================= -->
+        <!-- 2. VISTA: FIT-AI (Asistente) -->
+        <!-- ========================= -->
+        <div id="view-fit-ai" class="app-view space-y-6">
+            <h2 class="text-xl font-bold flex items-center gap-2"><span class="text-xl">🤖</span> Tu Asistente Inteligente</h2>
+            <p class="text-sm text-gray-400">Usa Inteligencia Artificial para potenciar tus resultados.</p>
+
+            <div class="card space-y-4">
+                <h3 class="font-bold flex items-center gap-2"><i data-lucide="sparkles" class="text-brand-500 w-4 h-4"></i> Generar Receta</h3>
+                <input type="text" id="ai-receta" placeholder="Ej: Algo dulce con avena y whey..." class="input-field text-sm">
+                <button onclick="llamarIA('ai-receta', 'out-receta', 'Crea una receta fitness corta con sus macros para: ')" class="btn-primary text-sm">Crear Receta</button>
+                <div id="out-receta" class="hidden bg-dark-900 border-l-2 border-brand-500 p-3 rounded text-sm text-gray-300 mt-2"></div>
+            </div>
+
+            <div class="card space-y-4">
+                <h3 class="font-bold flex items-center gap-2"><i data-lucide="sparkles" class="text-brand-500 w-4 h-4"></i> Tu Plan de Comidas Diario</h3>
+                <input type="text" id="ai-plan" placeholder="Preferencias (ej: vegetariano, rápido)" class="input-field text-sm">
+                <button onclick="llamarIA('ai-plan', 'out-plan', 'Genera un plan de comidas de 1 día para Liss enfocado en ganar músculo limpio. Preferencias: ')" class="btn-primary text-sm">Generar Plan</button>
+                <div id="out-plan" class="hidden bg-dark-900 border-l-2 border-brand-500 p-3 rounded text-sm text-gray-300 mt-2"></div>
+            </div>
+
+            <div class="card space-y-4">
+                <h3 class="font-bold flex items-center gap-2"><i data-lucide="sparkles" class="text-brand-500 w-4 h-4"></i> Analizar Notas de Entrenamiento</h3>
+                <textarea id="ai-nota" rows="2" class="input-field text-sm" placeholder="Hoy no sentí bien el glúteo en el hip thrust..."></textarea>
+                <button onclick="llamarIA('ai-nota', 'out-nota', 'Liss escribió esta nota sobre su entrenamiento en casa con mancuernas, dale un consejo breve y directo: ')" class="btn-secondary text-sm">Analizar Sensaciones</button>
+                <div id="out-nota" class="hidden bg-dark-900 border-l-2 border-brand-500 p-3 rounded text-sm text-gray-300 mt-2"></div>
+            </div>
+        </div>
+
+        <!-- ========================= -->
+        <!-- 3. VISTA: NUTRICIÓN -->
+        <!-- ========================= -->
+        <div id="view-nutricion" class="app-view space-y-6">
+            <h2 class="text-xl font-bold flex items-center gap-2"><span class="text-xl">🍎</span> Centro Nutricional</h2>
+            
+            <div class="card space-y-4">
+                <h3 class="font-bold">Tu Consumo de Hoy</h3>
+                <div class="space-y-3">
+                    <div><div class="flex justify-between text-xs mb-1"><span class="text-gray-400">Calorías</span> <span>0 / 2270 kcal</span></div><div class="w-full bg-dark-900 rounded-full h-2"><div class="bg-white h-2 rounded-full" style="width: 5%"></div></div></div>
+                    <div><div class="flex justify-between text-xs mb-1"><span class="text-gray-400">Proteína</span> <span>0 / 225 g</span></div><div class="w-full bg-dark-900 rounded-full h-2"><div class="bg-brand-500 h-2 rounded-full" style="width: 0%"></div></div></div>
+                    <div><div class="flex justify-between text-xs mb-1"><span class="text-gray-400">Carbs</span> <span>0 / 200 g</span></div><div class="w-full bg-dark-900 rounded-full h-2"><div class="bg-gray-400 h-2 rounded-full" style="width: 0%"></div></div></div>
+                    <div><div class="flex justify-between text-xs mb-1"><span class="text-gray-400">Grasas</span> <span>0 / 63 g</span></div><div class="w-full bg-dark-900 rounded-full h-2"><div class="bg-gray-600 h-2 rounded-full" style="width: 0%"></div></div></div>
+                </div>
+            </div>
+
+            <div class="card space-y-4">
+                <h3 class="font-bold border-b border-dark-700 pb-2">Matriz de Selección de Alimentos</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left">
+                        <thead><tr><th>PROTEÍNA</th><th>CARBS</th><th>GRASAS</th></tr></thead>
+                        <tbody class="text-gray-300">
+                            <tr><td>Pechuga de pollo</td><td>Avena, arroz</td><td>Aguacate</td></tr>
+                            <tr><td>Lomo de res/cerdo</td><td>Papa, batata</td><td>Aceite de oliva</td></tr>
+                            <tr><td>Pescado blanco</td><td>Plátano, pasta</td><td>Nueces, almendras</td></tr>
+                            <tr><td>Huevos, yogurt</td><td>Lentejas, pan</td><td>Crema de maní</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card space-y-4">
+                <h3 class="font-bold border-b border-dark-700 pb-2">Arquitectura Sugerida</h3>
+                <div class="space-y-3 text-xs text-gray-300 leading-relaxed">
+                    <p><strong class="text-brand-500">Comida 1:</strong> 5 claras + 1 huevo, 1/2 aguacate.</p>
+                    <p><strong class="text-brand-500">Comida 2:</strong> 200g yogurt griego, frutos rojos.</p>
+                    <p><strong class="text-brand-500">Comida 3 (Pre):</strong> 200g pollo, 200g arroz, brócoli.</p>
+                    <p><strong class="text-brand-500">Comida 4 (Post):</strong> 40g whey. Luego 180g lomo, 250g papa.</p>
+                    <p><strong class="text-brand-500">Comida 5:</strong> 200g cottage o salmón, almendras.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================= -->
+        <!-- 4. VISTA: ENTRENO (La Rutina Detallada Restaurada) -->
+        <!-- ========================= -->
+        <div id="view-entreno" class="app-view space-y-6">
+            <div class="text-center mb-6">
+                <h2 class="font-heading text-3xl font-bold uppercase tracking-wide">Programa <span class="text-brand-500">Liss</span></h2>
+                <p class="text-gray-400 text-sm max-w-2xl mx-auto mt-2">Selecciona tu día de entrenamiento. Sigue las instrucciones para dominar la técnica desde casa.</p>
+            </div>
+
+            <!-- Metodología (Mini Cards) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div class="bg-dark-900 p-4 rounded-xl border border-dark-700">
+                    <h3 class="font-bold text-brand-500 text-sm mb-1 flex items-center gap-2"><i data-lucide="trending-up" class="w-4 h-4"></i> Sobrecarga Progresiva</h3>
+                    <p class="text-gray-400 text-xs">Anota tus pesos. Cada semana intenta hacer una repetición más o usar una mancuerna más pesada.</p>
+                </div>
+                <div class="bg-dark-900 p-4 rounded-xl border border-dark-700">
+                    <h3 class="font-bold text-brand-500 text-sm mb-1 flex items-center gap-2"><i data-lucide="target" class="w-4 h-4"></i> Cerca del Fallo (RIR)</h3>
+                    <p class="text-gray-400 text-xs">Si la rutina pide 12 reps, la última debe costarte tanto que solo podrías hacer 1 o 2 más (RIR 1-2).</p>
+                </div>
+            </div>
+
+            <!-- Tabs de Días -->
+            <div class="flex overflow-x-auto gap-2 pb-2 -mx-4 px-4 scroll-smooth hide-scrollbar mb-4">
+                <button class="tab-btn active shrink-0 bg-brand-600 text-white px-5 py-2 rounded-full text-sm font-bold shadow-lg" onclick="openWorkoutTab(event, 'rutina-dia1')">Día 1</button>
+                <button class="tab-btn shrink-0 bg-dark-800 text-gray-300 border border-dark-700 px-5 py-2 rounded-full text-sm font-bold" onclick="openWorkoutTab(event, 'rutina-dia2')">Día 2</button>
+                <button class="tab-btn shrink-0 bg-dark-800 text-gray-300 border border-dark-700 px-5 py-2 rounded-full text-sm font-bold" onclick="openWorkoutTab(event, 'rutina-dia3')">Día 3</button>
+                <button class="tab-btn shrink-0 bg-dark-800 text-gray-300 border border-dark-700 px-5 py-2 rounded-full text-sm font-bold" onclick="openWorkoutTab(event, 'rutina-dia4')">Día 4</button>
+                <button class="tab-btn shrink-0 bg-dark-800 text-gray-300 border border-dark-700 px-5 py-2 rounded-full text-sm font-bold" onclick="openWorkoutTab(event, 'rutina-dia5')">Día 5</button>
+            </div>
+
+            <!-- Contenidos de Rutina (La original detallada) -->
+            <!-- Día 1 -->
+            <div id="rutina-dia1" class="tab-content active space-y-4">
+                <div class="bg-brand-900/20 border border-brand-900/50 p-4 rounded-xl mb-4">
+                    <h3 class="text-lg font-bold text-white mb-1">Día 1: Piernas y Glúteo</h3>
+                    <p class="text-xs text-brand-400">Enfoque: Isquiosurales y Glúteo Máximo | Descanso: 90-120s</p>
+                </div>
+                
+                <div class="exercise-card bg-dark-900 p-4 rounded-xl border border-dark-700 flex gap-4 items-center">
+                    <div class="bg-dark-800 w-12 h-12 rounded-lg flex items-center justify-center shrink-0 border border-dark-700"><span class="font-heading font-bold text-brand-500">01</span></div>
+                    <div>
+                        <h4 class="font-bold text-sm">Peso Muerto Rumano</h4>
+                        <p class="text-brand-400 font-semibold text-xs mb-1">4 Series x 10-12 Reps</p>
+                        <p class="text-gray-400 text-xs leading-tight">Mantén las mancuernas pegadas a tus piernas, espalda recta. Siente el estiramiento atrás al bajar.</p>
+                    </div>
+                </div>
+                <div class="exercise-card bg-dark-900 p-4 rounded-xl border border-dark-700 flex gap-4 items-center">
+                    <div class="bg-dark-800 w-12 h-12 rounded-lg flex items-center justify-center shrink-0 border border-dark-700"><span class="font-heading font-bold text-brand-500">02</span></div>
+                    <div>
+                        <h4 class="font-bold text-sm">Sentadilla Goblet</h4>
+                        <p class="text-brand-400 font-semibold text-xs mb-1">4 Series x 10-12 Reps</p>
+                        <p class="text-gray-400 text-xs leading-tight">Sostén una mancuerna vertical en el pecho. Baja profundo rompiendo el paralelo.</p>
+                    </div>
+                </div>
+                <div class="exercise-card bg-dark-900 p-4 rounded-xl border border-dark-700 flex gap-4 items-center">
+                    <div class="bg-dark-800 w-12 h-12 rounded-lg flex items-center justify-center shrink-0 border border-dark-700"><span class="font-heading font-bold text-brand-500">03</span></div>
+                    <div>
+                        <h4 class="font-bold text-sm">Zancadas Inversas (Lunges)</h4>
+                        <p class="text-brand-400 font-semibold text-xs mb-1">3 Series x 12 Reps / Pierna</p>
+                        <p class="text-gray-400 text-xs leading-tight">Da un paso hacia atrás. Un paso más largo activa más el glúteo.</p>
+                    </div>
+                </div>
+                <div class="exercise-card bg-dark-900 p-4 rounded-xl border border-dark-700 flex gap-4 items-center">
+                    <div class="bg-dark-800 w-12 h-12 rounded-lg flex items-center justify-center shrink-0 border border-dark-700"><span class="font-heading font-bold text-brand-500">04</span></div>
+                    <div>
+                        <h4 class="font-bold text-sm">Puente de Glúteo (Suelo)</h4>
+                        <p class="text-brand-400 font-semibold text-xs mb-1">3 Series x 15-20 Reps</p>
+                        <p class="text-gray-400 text-xs leading-tight">Mancuerna en la cadera. Aprieta glúteos 1 segundo arriba. Ve al fallo.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Día 2 -->
+            <div id="rutina-dia2" class="tab-content space-y-4">
+                <div class="bg-brand-900/20 border border-brand-900/50 p-4 rounded-xl mb-4">
+                    <h3 class="text-lg font-bold text-white mb-1">Día 2: Torso (Empuje)</h3>
+                    <p class="text-xs text-brand-400">Enfoque: Pecho, Hombros y Tríceps | Descanso: 60-90s</p>
+                </div>
+                <div class="exercise-card bg-dark-900 p-4 rounded-xl border border-dark-700 flex gap-4 items-center">
+                    <div class="bg-dark-800 w-12 h-12 rounded-lg flex items-center justify-center shrink-0 border border-dark-700"><span class="font-heading font-bold text-brand-500">01</span></div>
+                    <div><h4 class="font-bold text-sm">Floor Press (Suelo)</h4><p class="text-brand-400 font-semibold text-xs mb-1">4 Series x 10-12 Reps</p><p class="text-gray-400 text-xs leading-tight">Acostada, empuja mancuernas al techo. Codos tocan el suelo al bajar.</p></div>
+                </div>
+                <div class="exercise-card bg-dark-900 p-4 rounded-xl border border-dark-700 flex gap-4 items-center">
+                    <div class="bg-dark-800 w-12 h-12 rounded-lg flex items-center justify-center shrink-0 border border-dark-700"><span class="font-heading font-bold text-brand-500">02</span></div>
+                    <div><h4 class="font-bold text-sm">Press Militar Sentada</h4><p class="text-brand-400 font-semibold text-xs mb-1">3 Series x 10-12 Reps</p><p class="text-gray-400 text-xs leading-tight">Espalda recta. Sube las mancuernas por encima de tu cabeza.</p></div>
+                </div>
+                <div class="exercise-card bg-dark-900 p-4 rounded-xl border border-dark-700 flex gap-4 items-center">
+                    <div class="bg-dark-800 w-12 h-12 rounded-lg flex items-center justify-center shrink-0 border border-dark-700"><span class="font-heading font-bold text-brand-500">03</span></div>
+                    <div><h4 class="font-bold text-sm">Elevaciones Laterales</h4><p class="text-brand-400 font-semibold text-xs mb-1">3 Series x 12-15 Reps</p><p class="text-gray-400 text-xs leading-tight">Eleva los brazos a los lados. Usa peso moderado para aislar el hombro.</p></div>
+                </div>
+                <div class="exercise-card bg-dark-900 p-4 rounded-xl border border-dark-700 flex gap-4 items-center">
+                    <div class="bg-dark-800 w-12 h-12 rounded-lg flex items-center justify-center shrink-0 border border-dark-700"><span class="font-heading font-bold text-brand-500">04</span></div>
+                    <div><h4 class="font-bold text-sm">Extensión Tríceps Copa</h4><p class="text-brand-400 font-semibold text-xs mb-1">3 Series x 12 Reps</p><p class="text-gray-400 text-xs leading-tight">Sostén una mancuerna tras la cabeza y extiende brazos arriba.</p></div>
+                </div>
+            </div>
+
+            <!-- Día 3 -->
+            <div id="rutina-dia3" class="tab-content space-y-4">
+                <div class="bg-brand-900/20 border border-brand-900/50 p-4 rounded-xl mb-4">
+                    <h3 class="text-lg font-bold text-white mb-1">Día 3: Pierna (Cuádriceps)</h3>
+                    <p class="text-xs text-brand-400">Enfoque: Cara anterior de la pierna | Descanso: 90-120s</p>
+                </div>
+                <div class="exercise-card bg-dark-900 p-4 rounded-xl border border-dark-700 flex gap-4 items-center">
+                    <div class="bg-dark-800 w-12 h-12 rounded-lg flex items-center justify-center shrink-0 border border-dark-700"><span class="font-heading font-bold text-brand-500">01</span></div>
+                    <div><h4 class="font-bold text-sm">Sentadilla Búlgara</h4><p class="text-brand-400 font-semibold text-xs mb-1">3 Series x 10-12 Reps / Pierna</p><p class="text-gray-400 text-xs leading-tight">Pie trasero en sofá. Torso recto para enfocar el cuádriceps.</p></div>
+                </div>
+                <div class="exercise-card bg-dark-900 p-4 rounded-xl border border-dark-700 flex gap-4 items-center">
+                    <div class="bg-dark-800 w-12 h-12 rounded-lg flex items-center justify-center shrink-0 border border-dark-700"><span class="font-heading font-bold text-brand-500">02</span></div>
+                    <div><h4 class="font-bold text-sm">Sentadilla Frontal</h4><p class="text-brand-400 font-semibold text-xs mb-1">4 Series x 12 Reps</p><p class="text-gray-400 text-xs leading-tight">Apoya mancuernas en hombros. Obliga al core a trabajar duro.</p></div>
+                </div>
+                <div class="exercise-card bg-dark-900 p-4 rounded-xl border border-dark-700 flex gap-4 items-center">
+                    <div class="bg-dark-800 w-12 h-12 rounded-lg flex items-center justify-center shrink-0 border border-dark-700"><span class="font-heading font-bold text-brand-500">03</span></div>
+                    <div><h4 class="font-bold text-sm">Zancadas Caminando</h4><p class="text-brand-400 font-semibold text-xs mb-1">3 Series x 20 Pasos</p><p class="text-gray-400 text-xs leading-tight">Mancuernas en manos, avanza bajando la rodilla trasera al suelo.</p></div>
+                </div>
+                <div class="exercise-card bg-dark-900 p-4 rounded-xl border border-dark-700 flex gap-4 items-center">
+                    <div class="bg-dark-800 w-12 h-12 rounded-lg flex items-center justify-center shrink-0 border border-dark-700"><span class="font-heading font-bold text-brand-500">04</span></div>
+                    <div><h4 class="font-bold text-sm">Elevación Pantorrillas</h4><p class="text-brand-400 font-semibold text-xs mb-1">4 Series x 15-20 Reps</p><p class="text-gray-400 text-xs leading-tight">De pie, ponte de puntillas, sostén 1s arriba y baja lento.</p></div>
+                </div>
+            </div>
+
+            <!-- Día 4 -->
+            <div id="rutina-dia4" class="tab-content space-y-4">
+                <div class="bg-brand-900/20 border border-brand-900/50 p-4 rounded-xl mb-4">
+                    <h3 class="text-lg font-bold text-white mb-1">Día 4: Torso (Tracción)</h3>
+                    <p class="text-xs text-brand-400">Enfoque: Espalda y Bíceps (Mejora Postura) | Descanso: 60-90s</p>
+                </div>
+                <div class="exercise-card bg-dark-900 p-4 rounded-xl border border-dark-700 flex gap-4 items-center">
+                    <div class="bg-dark-800 w-12 h-12 rounded-lg flex items-center justify-center shrink-0 border border-dark-700"><span class="font-heading font-bold text-brand-500">01</span></div>
+                    <div><h4 class="font-bold text-sm">Remo Inclinado</h4><p class="text-brand-400 font-semibold text-xs mb-1">4 Series x 10-12 Reps</p><p class="text-gray-400 text-xs leading-tight">Torso inclinado, espalda recta. Tira mancuernas hacia la cadera.</p></div>
+                </div>
+                <div class="exercise-card bg-dark-900 p-4 rounded-xl border border-dark-700 flex gap-4 items-center">
+                    <div class="bg-dark-800 w-12 h-12 rounded-lg flex items-center justify-center shrink-0 border border-dark-700"><span class="font-heading font-bold text-brand-500">02</span></div>
+                    <div><h4 class="font-bold text-sm">Remo a una Mano</h4><p class="text-brand-400 font-semibold text-xs mb-1">3 Series x 10-12 Reps / Brazo</p><p class="text-gray-400 text-xs leading-tight">Apóyate en silla. Permite levantar más peso focalizando la espalda.</p></div>
+                </div>
+                <div class="exercise-card bg-dark-900 p-4 rounded-xl border border-dark-700 flex gap-4 items-center">
+                    <div class="bg-dark-800 w-12 h-12 rounded-lg flex items-center justify-center shrink-0 border border-dark-700"><span class="font-heading font-bold text-brand-500">03</span></div>
+                    <div><h4 class="font-bold text-sm">Pullover en Suelo</h4><p class="text-brand-400 font-semibold text-xs mb-1">3 Series x 12 Reps</p><p class="text-gray-400 text-xs leading-tight">Acostada, mancuerna con ambas manos. Llévala atrás y regresa.</p></div>
+                </div>
+                <div class="exercise-card bg-dark-900 p-4 rounded-xl border border-dark-700 flex gap-4 items-center">
+                    <div class="bg-dark-800 w-12 h-12 rounded-lg flex items-center justify-center shrink-0 border border-dark-700"><span class="font-heading font-bold text-brand-500">04</span></div>
+                    <div><h4 class="font-bold text-sm">Curl Bíceps Alterno</h4><p class="text-brand-400 font-semibold text-xs mb-1">3 Series x 12 Reps / Brazo</p><p class="text-gray-400 text-xs leading-tight">Codos pegados a las costillas, eleva peso sin balanceo.</p></div>
+                </div>
+            </div>
+
+            <!-- Día 5 -->
+            <div id="rutina-dia5" class="tab-content space-y-4">
+                <div class="bg-brand-900/20 border border-brand-900/50 p-4 rounded-xl mb-4">
+                    <h3 class="text-lg font-bold text-white mb-1">Día 5: Glúteo y Core</h3>
+                    <p class="text-xs text-brand-400">Enfoque: Aislamiento, Pump y Abdomen | Descanso: 60s</p>
+                </div>
+                <div class="exercise-card bg-dark-900 p-4 rounded-xl border border-dark-700 flex gap-4 items-center">
+                    <div class="bg-dark-800 w-12 h-12 rounded-lg flex items-center justify-center shrink-0 border border-dark-700"><span class="font-heading font-bold text-brand-500">01</span></div>
+                    <div><h4 class="font-bold text-sm">Hip Thrust (En Sofá)</h4><p class="text-brand-400 font-semibold text-xs mb-1">4 Series x 12-15 Reps</p><p class="text-gray-400 text-xs leading-tight">Espalda en sofá, exprime el glúteo arriba por 2 segundos.</p></div>
+                </div>
+                <div class="exercise-card bg-dark-900 p-4 rounded-xl border border-dark-700 flex gap-4 items-center">
+                    <div class="bg-dark-800 w-12 h-12 rounded-lg flex items-center justify-center shrink-0 border border-dark-700"><span class="font-heading font-bold text-brand-500">02</span></div>
+                    <div><h4 class="font-bold text-sm">Frog Pumps</h4><p class="text-brand-400 font-semibold text-xs mb-1">3 Series x 20-25 Reps</p><p class="text-gray-400 text-xs leading-tight">Suelo, plantas de pies juntas, rodillas abiertas. Levanta cadera.</p></div>
+                </div>
+                <div class="exercise-card bg-dark-900 p-4 rounded-xl border border-dark-700 flex gap-4 items-center">
+                    <div class="bg-dark-800 w-12 h-12 rounded-lg flex items-center justify-center shrink-0 border border-dark-700"><span class="font-heading font-bold text-brand-500">03</span></div>
+                    <div><h4 class="font-bold text-sm">Plancha Abdominal</h4><p class="text-brand-400 font-semibold text-xs mb-1">3 Series x 45-60 Segundos</p><p class="text-gray-400 text-xs leading-tight">Cuerpo en línea recta, aprieta fuerte abdomen y glúteos.</p></div>
+                </div>
+                <div class="exercise-card bg-dark-900 p-4 rounded-xl border border-dark-700 flex gap-4 items-center">
+                    <div class="bg-dark-800 w-12 h-12 rounded-lg flex items-center justify-center shrink-0 border border-dark-700"><span class="font-heading font-bold text-brand-500">04</span></div>
+                    <div><h4 class="font-bold text-sm">Russian Twists</h4><p class="text-brand-400 font-semibold text-xs mb-1">3 Series x 20 Reps (Total)</p><p class="text-gray-400 text-xs leading-tight">Sentada, torso inclinado atrás. Gira torso de lado a lado con peso.</p></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================= -->
+        <!-- 5. VISTA: PROGRESO -->
+        <!-- ========================= -->
+        <div id="view-progreso" class="app-view space-y-6">
+            <h2 class="text-xl font-bold flex items-center gap-2"><span class="text-xl">📈</span> Tu Centro de Progreso</h2>
+            
+            <div class="card space-y-4">
+                <h3 class="font-bold border-b border-dark-700 pb-2 text-sm">Registro de Medidas Corporales</h3>
+                <div class="grid grid-cols-2 gap-3">
+                    <input type="number" id="inp-peso" placeholder="Peso (kg)" class="input-field text-sm">
+                    <input type="number" id="inp-cintura" placeholder="Cintura (cm)" class="input-field text-sm">
+                </div>
+                <button onclick="registrarMedida()" class="btn-primary text-sm">Guardar Medidas</button>
+                <div class="overflow-x-auto mt-2">
+                    <table class="w-full text-xs text-left">
+                        <thead><tr><th>FECHA</th><th>PESO</th><th>CINTURA</th></tr></thead>
+                        <tbody id="lista-medidas" class="text-gray-300">
+                            <tr><td>Hoy</td><td>60 kg</td><td>68 cm</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card space-y-4">
+                <h3 class="font-bold border-b border-dark-700 pb-2 text-sm">Bitácora de Levantamientos</h3>
+                <select id="inp-ejercicio" class="input-field text-sm">
+                    <option value="">Seleccionar Ejercicio</option>
+                    <option value="Sentadilla">Sentadilla</option>
+                    <option value="Peso Muerto">Peso Muerto</option>
+                    <option value="Hip Thrust">Hip Thrust</option>
+                </select>
+                <div class="grid grid-cols-2 gap-3">
+                    <input type="number" id="inp-peso-ej" placeholder="Peso (kg/lbs)" class="input-field text-sm">
+                    <input type="number" id="inp-reps" placeholder="Reps" class="input-field text-sm">
+                </div>
+                <button onclick="registrarLevantamiento()" class="btn-secondary text-sm">Guardar Récord</button>
+                <div class="overflow-x-auto mt-2">
+                    <table class="w-full text-xs text-left">
+                        <thead><tr><th>FECHA</th><th>EJERCICIO</th><th>PESO</th><th>REPS</th></tr></thead>
+                        <tbody id="lista-levantamientos" class="text-gray-300"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================= -->
+        <!-- 6. VISTA: RECURSOS -->
+        <!-- ========================= -->
+        <div id="view-recursos" class="app-view space-y-6">
+            <h2 class="text-xl font-bold flex items-center gap-2"><span class="text-xl">🧠</span> Recursos y Calculadoras</h2>
+            
+            <div class="card space-y-5">
+                <h3 class="font-bold text-brand-500 border-b border-dark-700 pb-2">Calculadora de 1RM Estimado</h3>
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="number" id="calc1-peso" placeholder="Peso levantado" class="input-field text-sm">
+                    <input type="number" id="calc1-reps" placeholder="Reps hechas" class="input-field text-sm">
+                </div>
+                <button onclick="calcular1RM()" class="btn-secondary text-sm w-full">Calcular 1RM</button>
+                <div id="res-1rm" class="hidden text-center text-sm font-bold text-white bg-dark-900 p-2 rounded border border-brand-900"></div>
+            </div>
+
+            <div class="card space-y-5">
+                <h3 class="font-bold text-brand-500 border-b border-dark-700 pb-2">Calculadora Peso por RIR</h3>
+                <input type="number" id="calc2-1rm" placeholder="Tu 1RM estimado (Calculado arriba)" class="input-field text-sm">
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="number" id="calc2-reps" placeholder="Reps objetivo" class="input-field text-sm">
+                    <input type="number" id="calc2-rir" placeholder="RIR (0-3)" class="input-field text-sm">
+                </div>
+                <button onclick="calcularRIR()" class="btn-secondary text-sm w-full">Calcular Peso Ideal</button>
+                <div id="res-rir" class="hidden text-center text-sm font-bold text-white bg-dark-900 p-2 rounded border border-brand-900"></div>
+            </div>
+
+            <div class="card space-y-3">
+                <h3 class="font-bold flex items-center gap-2 text-brand-500"><i data-lucide="sparkles" class="w-4 h-4"></i> Stack Suplementos IA</h3>
+                <input type="text" id="ai-sups" placeholder="Ej: ganar masa y recuperar mejor..." class="input-field text-sm">
+                <button onclick="llamarIA('ai-sups', 'out-sups', 'Sugiere 3 suplementos básicos y efectivos para Liss, su objetivo es: ')" class="btn-secondary text-sm">Sugerir Stack</button>
+                <div id="out-sups" class="hidden bg-dark-900 border-l-2 border-brand-500 p-3 rounded text-sm text-gray-300 mt-2"></div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ========================= -->
+    <!-- BOTTOM NAVIGATION BAR -->
+    <!-- ========================= -->
+    <nav class="fixed bottom-0 w-full bg-dark-900 border-t border-dark-700 pb-safe z-50">
+        <div class="flex justify-between items-center max-w-3xl mx-auto px-2 h-16">
+            <div class="nav-item active" onclick="switchView('view-resumen', this)">
+                <span class="icon">📊</span>
+                <span>Resumen</span>
+            </div>
+            <div class="nav-item" onclick="switchView('view-fit-ai', this)">
+                <span class="icon">🤖</span>
+                <span>Fit-AI</span>
+            </div>
+            <div class="nav-item" onclick="switchView('view-nutricion', this)">
+                <span class="icon">🍎</span>
+                <span>Nutrición</span>
+            </div>
+            <div class="nav-item" onclick="switchView('view-entreno', this)">
+                <span class="icon">🏋️‍♀️</span>
+                <span>Entreno</span>
+            </div>
+            <div class="nav-item" onclick="switchView('view-progreso', this)">
+                <span class="icon">📈</span>
+                <span>Progreso</span>
+            </div>
+            <div class="nav-item" onclick="switchView('view-recursos', this)">
+                <span class="icon">🧠</span>
+                <span>Recursos</span>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section id="inicio" class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
-        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-crimson-900/40 via-dark-900 to-dark-900 z-0"></div>
-        
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div>
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-crimson-900/50 border border-crimson-600/30 text-crimson-400 text-sm font-semibold mb-6">
-                        <i data-lucide="star" class="w-4 h-4"></i> Exclusivo para Liss · 5 Días
-                    </div>
-                    <h1 class="font-heading text-5xl lg:text-7xl font-bold uppercase leading-tight mb-6">
-                        Página Personalizada <br>
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-crimson-400 to-crimson-600">Para Liss</span>
-                    </h1>
-                    <p class="text-gray-400 text-lg mb-8 leading-relaxed max-w-lg">
-                        Bienvenida a tu espacio, Liss. Este es tu programa profesional de fuerza e hipertrofia diseñado para que construyas masa muscular magra, fortalezcas tus curvas y alcances tu mejor versión desde casa.
-                    </p>
-                    <div class="flex gap-4">
-                        <a href="#rutina" class="bg-crimson-600 hover:bg-crimson-500 text-white font-bold py-3 px-8 rounded-full shadow-[0_0_20px_rgba(190,18,60,0.5)] transition-all flex items-center gap-2">
-                            Comenzar Rutina <i data-lucide="arrow-right" class="w-5 h-5"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="relative hidden lg:block">
-                    <!-- Abstract decorative element -->
-                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full border border-crimson-600/20"></div>
-                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full border-4 border-crimson-600/40"></div>
-                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[200px] rounded-full bg-gradient-to-tr from-crimson-900 to-dark-800 shadow-[0_0_50px_rgba(190,18,60,0.5)] flex items-center justify-center">
-                        <i data-lucide="dumbbell" class="text-crimson-500 w-24 h-24 opacity-80"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Methodology Section -->
-    <section id="metodologia" class="py-20 bg-dark-800 border-y border-dark-700">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="font-heading text-3xl md:text-4xl font-bold uppercase tracking-wide">Pilares de tu <span class="text-crimson-500">Crecimiento Muscular</span></h2>
-                <p class="mt-4 text-gray-400 max-w-2xl mx-auto">Liss, para que tus músculos crezcan en casa de forma efectiva, estas son las reglas de oro que debes aplicar en cada sesión.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Card 1 -->
-                <div class="bg-dark-900 p-8 rounded-2xl border border-dark-700 hover:border-crimson-600/50 transition-colors">
-                    <div class="bg-crimson-900/30 w-14 h-14 rounded-xl flex items-center justify-center mb-6 text-crimson-500">
-                        <i data-lucide="trending-up" class="w-7 h-7"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Sobrecarga Progresiva</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">
-                        Cada semana intenta hacer una repetición más o usar una mancuerna ligeramente más pesada. Si el entrenamiento siempre es fácil, el músculo no tiene motivos para crecer.
-                    </p>
-                </div>
-                <!-- Card 2 -->
-                <div class="bg-dark-900 p-8 rounded-2xl border border-dark-700 hover:border-crimson-600/50 transition-colors">
-                    <div class="bg-crimson-900/30 w-14 h-14 rounded-xl flex items-center justify-center mb-6 text-crimson-500">
-                        <i data-lucide="target" class="w-7 h-7"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Cerca del Fallo (RIR)</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">
-                        Tus últimas repeticiones deben costar. Si tu rutina dice "12 repeticiones", la número 12 debe sentirse como que solo podrías hacer 1 o 2 más como máximo.
-                    </p>
-                </div>
-                <!-- Card 3 -->
-                <div class="bg-dark-900 p-8 rounded-2xl border border-dark-700 hover:border-crimson-600/50 transition-colors">
-                    <div class="bg-crimson-900/30 w-14 h-14 rounded-xl flex items-center justify-center mb-6 text-crimson-500">
-                        <i data-lucide="utensils" class="w-7 h-7"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Nutrición y Descanso</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">
-                        El músculo se destruye entrenando y se construye descansando. Duerme al menos 7-8 horas y prioriza la proteína en tus comidas diarias.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Workout Routine Section -->
-    <section id="rutina" class="py-24 relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="font-heading text-4xl md:text-5xl font-bold uppercase tracking-wide mb-4">El Plan de <span class="text-crimson-500">Liss</span></h2>
-                <p class="text-gray-400 max-w-2xl mx-auto">Selecciona el día para ver tu rutina detallada. Recuerda calentar 5-10 minutos antes de empezar.</p>
-            </div>
-
-            <!-- Tabs Navigation -->
-            <!-- Nota: Añadimos clases base claras para manipularlas con JS fácilmente -->
-            <div class="flex flex-wrap justify-center gap-2 md:gap-4 mb-12">
-                <button class="tab-btn bg-crimson-600 text-white border-transparent font-bold py-2 px-4 md:px-6 rounded-full text-sm md:text-base border transition-colors shadow-lg" onclick="openTab(event, 'dia1')">Día 1: Piernas y Glúteo</button>
-                <button class="tab-btn bg-dark-800 text-gray-300 border-dark-700 hover:bg-dark-700 font-bold py-2 px-4 md:px-6 rounded-full text-sm md:text-base border transition-colors" onclick="openTab(event, 'dia2')">Día 2: Torso (Empuje)</button>
-                <button class="tab-btn bg-dark-800 text-gray-300 border-dark-700 hover:bg-dark-700 font-bold py-2 px-4 md:px-6 rounded-full text-sm md:text-base border transition-colors" onclick="openTab(event, 'dia3')">Día 3: Pierna (Cuádriceps)</button>
-                <button class="tab-btn bg-dark-800 text-gray-300 border-dark-700 hover:bg-dark-700 font-bold py-2 px-4 md:px-6 rounded-full text-sm md:text-base border transition-colors" onclick="openTab(event, 'dia4')">Día 4: Torso (Tracción)</button>
-                <button class="tab-btn bg-dark-800 text-gray-300 border-dark-700 hover:bg-dark-700 font-bold py-2 px-4 md:px-6 rounded-full text-sm md:text-base border transition-colors" onclick="openTab(event, 'dia5')">Día 5: Glúteo y Core</button>
-            </div>
-
-            <!-- Rutina Día 1 -->
-            <div id="dia1" class="tab-content active" style="display: block;">
-                <div class="bg-dark-800/50 p-6 md:p-8 rounded-2xl border border-crimson-900/30">
-                    <h3 class="text-2xl font-bold mb-2 flex items-center gap-3"><i data-lucide="flame" class="text-crimson-500"></i> Día 1: Tren Inferior (Glúteo e Isquios)</h3>
-                    <p class="text-gray-400 mb-8 pb-4 border-b border-dark-700">Descanso entre series: 90 a 120 segundos.</p>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="exercise-card bg-dark-900 p-5 rounded-xl border border-dark-700 flex gap-4">
-                            <div class="bg-dark-800 w-16 h-16 rounded-lg flex items-center justify-center shrink-0 border border-dark-700">
-                                <span class="text-xl font-heading font-bold text-crimson-500">01</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-lg">Peso Muerto Rumano</h4>
-                                <p class="text-crimson-400 font-semibold text-sm mb-2">4 Series x 10-12 Reps</p>
-                                <p class="text-gray-400 text-xs">Mantén las mancuernas pegadas a tus piernas, espalda recta y siente el estiramiento en la parte posterior de la pierna al bajar.</p>
-                            </div>
-                        </div>
-                        <div class="exercise-card bg-dark-900 p-5 rounded-xl border border-dark-700 flex gap-4">
-                            <div class="bg-dark-800 w-16 h-16 rounded-lg flex items-center justify-center shrink-0 border border-dark-700">
-                                <span class="text-xl font-heading font-bold text-crimson-500">02</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-lg">Sentadilla Goblet</h4>
-                                <p class="text-crimson-400 font-semibold text-sm mb-2">4 Series x 10-12 Reps</p>
-                                <p class="text-gray-400 text-xs">Sostén una mancuerna verticalmente pegada a tu pecho. Baja profundo rompiendo el paralelo si tu movilidad lo permite.</p>
-                            </div>
-                        </div>
-                        <div class="exercise-card bg-dark-900 p-5 rounded-xl border border-dark-700 flex gap-4">
-                            <div class="bg-dark-800 w-16 h-16 rounded-lg flex items-center justify-center shrink-0 border border-dark-700">
-                                <span class="text-xl font-heading font-bold text-crimson-500">03</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-lg">Zancadas Inversas (Lunges)</h4>
-                                <p class="text-crimson-400 font-semibold text-sm mb-2">3 Series x 12 Reps (Por pierna)</p>
-                                <p class="text-gray-400 text-xs">Da un paso hacia atrás, baja controladamente. Un paso más largo activa más el glúteo.</p>
-                            </div>
-                        </div>
-                        <div class="exercise-card bg-dark-900 p-5 rounded-xl border border-dark-700 flex gap-4">
-                            <div class="bg-dark-800 w-16 h-16 rounded-lg flex items-center justify-center shrink-0 border border-dark-700">
-                                <span class="text-xl font-heading font-bold text-crimson-500">04</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-lg">Puente de Glúteo (Suelo)</h4>
-                                <p class="text-crimson-400 font-semibold text-sm mb-2">3 Series x 15-20 Reps</p>
-                                <p class="text-gray-400 text-xs">Coloca una mancuerna en tu cadera. Aprieta los glúteos un segundo en la parte más alta del movimiento.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Rutina Día 2 -->
-            <div id="dia2" class="tab-content">
-                <div class="bg-dark-800/50 p-6 md:p-8 rounded-2xl border border-crimson-900/30">
-                    <h3 class="text-2xl font-bold mb-2 flex items-center gap-3"><i data-lucide="zap" class="text-crimson-500"></i> Día 2: Tren Superior (Pecho, Hombros, Tríceps)</h3>
-                    <p class="text-gray-400 mb-8 pb-4 border-b border-dark-700">Descanso entre series: 60 a 90 segundos. Un tren superior tonificado resalta la postura.</p>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="exercise-card bg-dark-900 p-5 rounded-xl border border-dark-700 flex gap-4">
-                            <div class="bg-dark-800 w-16 h-16 rounded-lg flex items-center justify-center shrink-0 border border-dark-700">
-                                <span class="text-xl font-heading font-bold text-crimson-500">01</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-lg">Floor Press (Press en el suelo)</h4>
-                                <p class="text-crimson-400 font-semibold text-sm mb-2">4 Series x 10-12 Reps</p>
-                                <p class="text-gray-400 text-xs">Acostada bocarriba, empuja las mancuernas hacia el techo. Tus codos tocan el suelo al bajar.</p>
-                            </div>
-                        </div>
-                        <div class="exercise-card bg-dark-900 p-5 rounded-xl border border-dark-700 flex gap-4">
-                            <div class="bg-dark-800 w-16 h-16 rounded-lg flex items-center justify-center shrink-0 border border-dark-700">
-                                <span class="text-xl font-heading font-bold text-crimson-500">02</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-lg">Press Militar Sentada</h4>
-                                <p class="text-crimson-400 font-semibold text-sm mb-2">3 Series x 10-12 Reps</p>
-                                <p class="text-gray-400 text-xs">Espalda recta. Sube las mancuernas por encima de tu cabeza. Controla la bajada.</p>
-                            </div>
-                        </div>
-                        <div class="exercise-card bg-dark-900 p-5 rounded-xl border border-dark-700 flex gap-4">
-                            <div class="bg-dark-800 w-16 h-16 rounded-lg flex items-center justify-center shrink-0 border border-dark-700">
-                                <span class="text-xl font-heading font-bold text-crimson-500">03</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-lg">Elevaciones Laterales</h4>
-                                <p class="text-crimson-400 font-semibold text-sm mb-2">3 Series x 12-15 Reps</p>
-                                <p class="text-gray-400 text-xs">De pie, eleva los brazos hacia los lados. Usa un peso moderado para enfocar el hombro lateral.</p>
-                            </div>
-                        </div>
-                        <div class="exercise-card bg-dark-900 p-5 rounded-xl border border-dark-700 flex gap-4">
-                            <div class="bg-dark-800 w-16 h-16 rounded-lg flex items-center justify-center shrink-0 border border-dark-700">
-                                <span class="text-xl font-heading font-bold text-crimson-500">04</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-lg">Extensión de Tríceps (Copa)</h4>
-                                <p class="text-crimson-400 font-semibold text-sm mb-2">3 Series x 12 Reps</p>
-                                <p class="text-gray-400 text-xs">Con ambas manos sostén una mancuerna detrás de tu cabeza y extiende los brazos hacia arriba.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Rutina Día 3 -->
-            <div id="dia3" class="tab-content">
-                <div class="bg-dark-800/50 p-6 md:p-8 rounded-2xl border border-crimson-900/30">
-                    <h3 class="text-2xl font-bold mb-2 flex items-center gap-3"><i data-lucide="target" class="text-crimson-500"></i> Día 3: Tren Inferior (Enfoque Cuádriceps)</h3>
-                    <p class="text-gray-400 mb-8 pb-4 border-b border-dark-700">Descanso entre series: 90 a 120 segundos. Prepárate para el reto, Liss.</p>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="exercise-card bg-dark-900 p-5 rounded-xl border border-dark-700 flex gap-4">
-                            <div class="bg-dark-800 w-16 h-16 rounded-lg flex items-center justify-center shrink-0 border border-dark-700">
-                                <span class="text-xl font-heading font-bold text-crimson-500">01</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-lg">Sentadilla Búlgara</h4>
-                                <p class="text-crimson-400 font-semibold text-sm mb-2">3 Series x 10-12 Reps (Por pierna)</p>
-                                <p class="text-gray-400 text-xs">Apoya el empeine del pie trasero en una silla o sofá. Mantén el torso un poco más recto.</p>
-                            </div>
-                        </div>
-                        <div class="exercise-card bg-dark-900 p-5 rounded-xl border border-dark-700 flex gap-4">
-                            <div class="bg-dark-800 w-16 h-16 rounded-lg flex items-center justify-center shrink-0 border border-dark-700">
-                                <span class="text-xl font-heading font-bold text-crimson-500">02</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-lg">Sentadilla Frontal con Mancuernas</h4>
-                                <p class="text-crimson-400 font-semibold text-sm mb-2">4 Series x 12 Reps</p>
-                                <p class="text-gray-400 text-xs">Apoya las mancuernas en tus hombros. La posición del peso obliga a tus cuádriceps y core a trabajar más.</p>
-                            </div>
-                        </div>
-                        <div class="exercise-card bg-dark-900 p-5 rounded-xl border border-dark-700 flex gap-4">
-                            <div class="bg-dark-800 w-16 h-16 rounded-lg flex items-center justify-center shrink-0 border border-dark-700">
-                                <span class="text-xl font-heading font-bold text-crimson-500">03</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-lg">Zancadas Caminando</h4>
-                                <p class="text-crimson-400 font-semibold text-sm mb-2">3 Series x 20 Pasos</p>
-                                <p class="text-gray-400 text-xs">Con mancuernas en las manos, da pasos hacia adelante bajando la rodilla trasera hacia el suelo.</p>
-                            </div>
-                        </div>
-                        <div class="exercise-card bg-dark-900 p-5 rounded-xl border border-dark-700 flex gap-4">
-                            <div class="bg-dark-800 w-16 h-16 rounded-lg flex items-center justify-center shrink-0 border border-dark-700">
-                                <span class="text-xl font-heading font-bold text-crimson-500">04</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-lg">Elevación de Pantorrillas</h4>
-                                <p class="text-crimson-400 font-semibold text-sm mb-2">4 Series x 15-20 Reps</p>
-                                <p class="text-gray-400 text-xs">De pie sosteniendo mancuernas, ponte de puntillas, sostén 1 segundo arriba y baja despacio.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Rutina Día 4 -->
-            <div id="dia4" class="tab-content">
-                <div class="bg-dark-800/50 p-6 md:p-8 rounded-2xl border border-crimson-900/30">
-                    <h3 class="text-2xl font-bold mb-2 flex items-center gap-3"><i data-lucide="shield" class="text-crimson-500"></i> Día 4: Tren Superior (Espalda y Bíceps)</h3>
-                    <p class="text-gray-400 mb-8 pb-4 border-b border-dark-700">Descanso entre series: 60 a 90 segundos. Una espalda fuerte mejora mucho la postura visual.</p>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="exercise-card bg-dark-900 p-5 rounded-xl border border-dark-700 flex gap-4">
-                            <div class="bg-dark-800 w-16 h-16 rounded-lg flex items-center justify-center shrink-0 border border-dark-700">
-                                <span class="text-xl font-heading font-bold text-crimson-500">01</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-lg">Remo Inclinado</h4>
-                                <p class="text-crimson-400 font-semibold text-sm mb-2">4 Series x 10-12 Reps</p>
-                                <p class="text-gray-400 text-xs">Inclina el torso hacia adelante manteniendo la espalda recta. Tira de las mancuernas hacia tu cadera.</p>
-                            </div>
-                        </div>
-                        <div class="exercise-card bg-dark-900 p-5 rounded-xl border border-dark-700 flex gap-4">
-                            <div class="bg-dark-800 w-16 h-16 rounded-lg flex items-center justify-center shrink-0 border border-dark-700">
-                                <span class="text-xl font-heading font-bold text-crimson-500">02</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-lg">Remo a una Mano</h4>
-                                <p class="text-crimson-400 font-semibold text-sm mb-2">3 Series x 10-12 Reps (Por brazo)</p>
-                                <p class="text-gray-400 text-xs">Apoya una mano y rodilla en una silla. Jala la mancuerna hacia tu cadera. Permite usar más peso.</p>
-                            </div>
-                        </div>
-                        <div class="exercise-card bg-dark-900 p-5 rounded-xl border border-dark-700 flex gap-4">
-                            <div class="bg-dark-800 w-16 h-16 rounded-lg flex items-center justify-center shrink-0 border border-dark-700">
-                                <span class="text-xl font-heading font-bold text-crimson-500">03</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-lg">Pullover en Suelo</h4>
-                                <p class="text-crimson-400 font-semibold text-sm mb-2">3 Series x 12 Reps</p>
-                                <p class="text-gray-400 text-xs">Acostada bocarriba, sostén una mancuerna con ambas manos sobre tu pecho. Llévala hacia atrás de tu cabeza y regresa.</p>
-                            </div>
-                        </div>
-                        <div class="exercise-card bg-dark-900 p-5 rounded-xl border border-dark-700 flex gap-4">
-                            <div class="bg-dark-800 w-16 h-16 rounded-lg flex items-center justify-center shrink-0 border border-dark-700">
-                                <span class="text-xl font-heading font-bold text-crimson-500">04</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-lg">Curl de Bíceps Alterno</h4>
-                                <p class="text-crimson-400 font-semibold text-sm mb-2">3 Series x 12 Reps (Por brazo)</p>
-                                <p class="text-gray-400 text-xs">Mantén los codos pegados a las costillas y eleva el peso controladamente sin balancear el cuerpo.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Rutina Día 5 -->
-            <div id="dia5" class="tab-content">
-                <div class="bg-dark-800/50 p-6 md:p-8 rounded-2xl border border-crimson-900/30">
-                    <h3 class="text-2xl font-bold mb-2 flex items-center gap-3"><i data-lucide="crown" class="text-crimson-500"></i> Día 5: Enfoque Glúteo (Pump) y Core</h3>
-                    <p class="text-gray-400 mb-8 pb-4 border-b border-dark-700">Día de aislamiento para cerrar la semana con el mejor trabajo abdominal.</p>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="exercise-card bg-dark-900 p-5 rounded-xl border border-dark-700 flex gap-4">
-                            <div class="bg-dark-800 w-16 h-16 rounded-lg flex items-center justify-center shrink-0 border border-dark-700">
-                                <span class="text-xl font-heading font-bold text-crimson-500">01</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-lg">Hip Thrust (En Sofá)</h4>
-                                <p class="text-crimson-400 font-semibold text-sm mb-2">4 Series x 12-15 Reps</p>
-                                <p class="text-gray-400 text-xs">Apoya tu espalda alta en el sofá. Coloca la mancuerna en la cadera. Exprimiendo el glúteo arriba por 2 segundos.</p>
-                            </div>
-                        </div>
-                        <div class="exercise-card bg-dark-900 p-5 rounded-xl border border-dark-700 flex gap-4">
-                            <div class="bg-dark-800 w-16 h-16 rounded-lg flex items-center justify-center shrink-0 border border-dark-700">
-                                <span class="text-xl font-heading font-bold text-crimson-500">02</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-lg">Frog Pumps</h4>
-                                <p class="text-crimson-400 font-semibold text-sm mb-2">3 Series x 20-25 Reps</p>
-                                <p class="text-gray-400 text-xs">Acostada en el suelo, junta las plantas de los pies y abre las rodillas. Levanta la cadera. Excelente quemazón.</p>
-                            </div>
-                        </div>
-                        <div class="exercise-card bg-dark-900 p-5 rounded-xl border border-dark-700 flex gap-4">
-                            <div class="bg-dark-800 w-16 h-16 rounded-lg flex items-center justify-center shrink-0 border border-dark-700">
-                                <span class="text-xl font-heading font-bold text-crimson-500">03</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-lg">Plancha Abdominal</h4>
-                                <p class="text-crimson-400 font-semibold text-sm mb-2">3 Series x 45-60 Segundos</p>
-                                <p class="text-gray-400 text-xs">Apóyate en los antebrazos. Mantén el cuerpo en línea recta, apretando fuerte el abdomen y los glúteos.</p>
-                            </div>
-                        </div>
-                        <div class="exercise-card bg-dark-900 p-5 rounded-xl border border-dark-700 flex gap-4">
-                            <div class="bg-dark-800 w-16 h-16 rounded-lg flex items-center justify-center shrink-0 border border-dark-700">
-                                <span class="text-xl font-heading font-bold text-crimson-500">04</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-lg">Russian Twists</h4>
-                                <p class="text-crimson-400 font-semibold text-sm mb-2">3 Series x 20 Reps (Total)</p>
-                                <p class="text-gray-400 text-xs">Sentada, inclina el torso hacia atrás. Sostén una mancuerna ligera y gira el torso de lado a lado.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-dark-900 py-10 border-t border-crimson-900/30">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <div class="flex justify-center items-center gap-2 mb-4">
-                <i data-lucide="heart" class="text-crimson-600 w-6 h-6"></i>
-                <span class="font-heading font-bold text-xl tracking-wide text-white uppercase">Programa <span class="text-crimson-600">Liss</span></span>
-            </div>
-            <p class="text-gray-500 text-sm mb-4">La consistencia y la disciplina son tus mejores accesorios.</p>
-            <p class="text-dark-700 text-xs">© 2026 Diseñado exclusivamente para Liss.</p>
-        </div>
-    </footer>
-
-    <!-- Scripts -->
+    <!-- Scripts de Funcionalidad -->
     <script>
         // Inicializar Iconos
         lucide.createIcons();
 
-        // Lógica de Tabs corregida
-        function openTab(evt, tabName) {
-            // 1. Ocultar todos los contenidos
-            const tabContents = document.querySelectorAll('.tab-content');
-            tabContents.forEach(content => {
-                content.style.display = 'none';
-                content.classList.remove('active');
+        // 1. Toast Notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = message;
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 3000);
+        }
+
+        // 2. Lógica del Bottom Navigation Bar
+        function switchView(viewId, navElement) {
+            // Ocultar todas las vistas
+            document.querySelectorAll('.app-view').forEach(view => {
+                view.classList.remove('active');
+            });
+            // Quitar clase activa de todos los items del nav
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
             });
 
-            // 2. Reiniciar el estilo de todos los botones al estado "inactivo" (Gris/Oscuro)
-            const tabBtns = document.querySelectorAll('.tab-btn');
-            tabBtns.forEach(btn => {
-                // Quitamos las clases de estado activo (Rojo)
-                btn.classList.remove('bg-crimson-600', 'text-white', 'border-transparent', 'shadow-lg');
-                // Añadimos las clases de estado inactivo (Oscuro)
-                btn.classList.add('bg-dark-800', 'text-gray-300', 'border-dark-700');
-            });
-
-            // 3. Mostrar el contenido del tab seleccionado
-            const currentTab = document.getElementById(tabName);
-            currentTab.style.display = 'block';
+            // Mostrar vista seleccionada
+            document.getElementById(viewId).classList.add('active');
+            // Activar el item clickeado en el nav (pone la línea roja y texto rojo)
+            navElement.classList.add('active');
             
-            // Timeout muy corto para que se aplique la animación CSS de opacidad y desplazamiento
-            setTimeout(() => {
-                currentTab.classList.add('active');
-            }, 10);
+            window.scrollTo(0, 0); // Ir arriba al cambiar de pestaña
+        }
 
-            // 4. Aplicar el estilo "activo" (Rojo) al botón que se acaba de clickear
-            const clickedBtn = evt.currentTarget;
-            // Quitamos las clases inactiva
-            clickedBtn.classList.remove('bg-dark-800', 'text-gray-300', 'border-dark-700');
-            // Añadimos las clases activas
-            clickedBtn.classList.add('bg-crimson-600', 'text-white', 'border-transparent', 'shadow-lg');
+        // 3. Pestañas de la Rutina
+        function openWorkoutTab(evt, tabName) {
+            document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('bg-brand-600', 'text-white', 'shadow-lg');
+                b.classList.add('bg-dark-800', 'text-gray-300');
+            });
+            document.getElementById(tabName).style.display = 'block';
+            evt.currentTarget.classList.remove('bg-dark-800', 'text-gray-300');
+            evt.currentTarget.classList.add('bg-brand-600', 'text-white', 'shadow-lg');
+        }
+
+        // 4. Trackers Simples
+        const getShortDate = () => { const d = new Date(); return `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}`; };
+        
+        function registrarMedida() {
+            const peso = document.getElementById('inp-peso').value;
+            const cint = document.getElementById('inp-cintura').value;
+            if(!peso) { showToast('Ingresa el peso'); return; }
+            document.getElementById('lista-medidas').insertAdjacentHTML('afterbegin', `<tr><td class="text-brand-500 font-bold">${getShortDate()}</td><td>${peso} kg</td><td>${cint || '-'} cm</td></tr>`);
+            showToast('Medidas Guardadas');
+        }
+
+        function registrarLevantamiento() {
+            const ej = document.getElementById('inp-ejercicio').value;
+            const peso = document.getElementById('inp-peso-ej').value;
+            const reps = document.getElementById('inp-reps').value;
+            if(!ej || !peso) { showToast('Faltan datos'); return; }
+            document.getElementById('lista-levantamientos').insertAdjacentHTML('afterbegin', `<tr><td class="text-brand-500 font-bold">${getShortDate()}</td><td>${ej}</td><td>${peso}</td><td>${reps}</td></tr>`);
+            showToast('Récord Guardado');
+        }
+
+        // 5. Calculadoras
+        function calcular1RM() {
+            const p = parseFloat(document.getElementById('calc1-peso').value);
+            const r = parseInt(document.getElementById('calc1-reps').value);
+            if(p && r) {
+                document.getElementById('res-1rm').innerText = `Tu 1RM es aprox: ${(p * (1 + (r / 30))).toFixed(1)} kg`;
+                document.getElementById('res-1rm').classList.remove('hidden');
+            }
+        }
+
+        function calcularRIR() {
+            const rm = parseFloat(document.getElementById('calc2-1rm').value);
+            const reps = parseInt(document.getElementById('calc2-reps').value);
+            const rir = parseInt(document.getElementById('calc2-rir').value);
+            if(rm && reps && rir >= 0) {
+                const pesoObj = rm / (1 + ((reps + rir) / 30));
+                document.getElementById('res-rir').innerText = `Peso sugerido: ${pesoObj.toFixed(1)} kg`;
+                document.getElementById('res-rir').classList.remove('hidden');
+            }
+        }
+
+        // 6. Integración de IA Real (Mantenida intacta)
+        const apiKey = ""; 
+        async function llamarIA(inputId, outputId, systemPrompt) {
+            const inputVal = document.getElementById(inputId).value;
+            const resDiv = document.getElementById(outputId);
+            if(!inputVal) { showToast("Escribe algo primero."); return; }
+
+            resDiv.style.display = 'block';
+            resDiv.innerHTML = '<span class="text-brand-500 animate-pulse">Pensando...</span>';
+
+            try {
+                const fetchConReintentos = async (url, options, reintentos = 5) => {
+                    const tiempos = [1000, 2000, 4000, 8000, 16000];
+                    for (let i = 0; i < reintentos; i++) {
+                        try {
+                            const res = await fetch(url, options);
+                            if (!res.ok) throw new Error('Error en API');
+                            return await res.json();
+                        } catch (err) {
+                            if (i === reintentos - 1) throw err;
+                            await new Promise(r => setTimeout(r, tiempos[i]));
+                        }
+                    }
+                };
+
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+                const data = await fetchConReintentos(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: systemPrompt + " " + inputVal }] }] })
+                });
+
+                const respuesta = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                if(respuesta) {
+                    resDiv.innerHTML = respuesta.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>').replace(/\n/g, '<br>');
+                } else {
+                    resDiv.innerHTML = '<span class="text-red-500">Error en la respuesta.</span>';
+                }
+            } catch (error) {
+                resDiv.innerHTML = '<span class="text-red-500">Error de conexión. La clave API se inyectará en el entorno.</span>';
+            }
         }
     </script>
 </body>
