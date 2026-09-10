@@ -1,711 +1,153 @@
-
 <!DOCTYPE html>
-<html lang="es" class="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Liss Fit Ultimate | Experiencia Premium</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        red: { 400: '#f87171', 500: '#ef4444', 600: '#dc2626', 700: '#b91c1c', 800: '#991b1b', 900: '#7f1d1d', 950: '#450a0a' },
-                        dark: { 100: '#262626', 200: '#171717', 300: '#0a0a0a', 400: '#050505', 500: '#000000' }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                        display: ['Montserrat', 'system-ui', 'sans-serif'],
-                    },
-                    animation: {
-                        'slide-up': 'slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
-                        'fade-in': 'fadeIn 0.5s ease-out forwards',
-                        'float': 'float 6s ease-in-out infinite',
-                        'float-delayed': 'float 8s ease-in-out 3s infinite',
-                        'pulse-glow': 'pulseGlow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'scale-in': 'scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards',
-                    },
-                    keyframes: {
-                        slideUp: { '0%': { transform: 'translateY(30px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
-                        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
-                        float: { '0%, 100%': { transform: 'translateY(0) scale(1)' }, '50%': { transform: 'translateY(-20px) scale(1.05)' } },
-                        pulseGlow: { '0%, 100%': { opacity: '1', boxShadow: '0 0 15px rgba(220,38,38,0.5)' }, '50%': { opacity: '.8', boxShadow: '0 0 30px rgba(220,38,38,0.8)' } },
-                        scaleIn: { '0%': { transform: 'scale(0.9)', opacity: '0' }, '100%': { transform: 'scale(1)', opacity: '1' } }
-                    }
-                }
-            }
-        }
-    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gimnasio Profesional y Exclusivo</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@600;800;900&display=swap');
-        body { 
-            background-color: #000000; 
-            color: #e5e5e5; 
-            -webkit-tap-highlight-color: transparent; 
-            overflow-x: hidden;
+        /* Estilos personalizados */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #111;
+            color: #fff;
         }
-        
-        /* Fondo animado dinámico */
-        .bg-dynamic {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: -1;
-            background: radial-gradient(circle at 15% 50%, rgba(30, 0, 0, 0.4), transparent 50%),
-                        radial-gradient(circle at 85% 30%, rgba(60, 0, 0, 0.3), transparent 50%);
+        .cta-btn {
+            background-color: #00FF66;
+            border-color: #00FF66;
         }
-        
-        /* Scrollbar oculto pero funcional */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        /* Estilos Glassmorphism Premium */
-        .glass-panel { 
-            background: rgba(10, 10, 10, 0.6); 
-            backdrop-filter: blur(16px); 
-            -webkit-backdrop-filter: blur(16px); 
-            border: 1px solid rgba(255, 255, 255, 0.08); 
+        .cta-btn:hover {
+            background-color: #00e657;
+            border-color: #00e657;
         }
-        .glass-card {
-            background: linear-gradient(145deg, rgba(30,30,30,0.6) 0%, rgba(15,15,15,0.8) 100%);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-        }
-        
-        /* Inputs y Botones */
-        .input-dark { background-color: rgba(0,0,0,0.5); border: 1px solid #3f3f46; color: white; padding: 0.75rem 1rem; border-radius: 0.75rem; width: 100%; transition: all 0.3s ease; }
-        .input-dark:focus { outline: none; border-color: #ef4444; box-shadow: 0 0 15px rgba(239, 68, 68, 0.2); background-color: rgba(20,20,20,0.8); }
-        .btn-red { 
-            background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%); 
-            color: white; font-weight: 700; padding: 0.875rem 1.5rem; border-radius: 0.75rem; width: 100%; 
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); text-align: center; display: inline-block; cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        .btn-red:active { transform: scale(0.97); }
-        .btn-red:hover { box-shadow: 0 0 20px rgba(220, 38, 38, 0.4); }
-
-        /* Checkbox interactivo */
-        .checkbox-custom input:checked + div { 
-            background: linear-gradient(135deg, #ef4444 0%, #991b1b 100%); 
-            border-color: transparent; 
-            box-shadow: 0 0 15px rgba(220, 38, 38, 0.5);
+        .service-card:hover {
             transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 255, 102, 0.5);
         }
-        .checkbox-custom input:checked + div svg { display: block; animation: scaleIn 0.2s ease-out; }
-        .checkbox-custom div { transition: all 0.2s ease; }
-        
-        /* Textos Gradientes */
-        .text-gradient { background: linear-gradient(to right, #ffffff, #a3a3a3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .text-gradient-red { background: linear-gradient(to right, #ef4444, #991b1b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
-        input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-        .view-hidden { display: none !important; }
-        
-        /* Efecto de orbes */
-        .orb-1 { position: absolute; top: -10%; left: -10%; width: 40vw; height: 40vw; background: #dc2626; border-radius: 50%; filter: blur(100px); opacity: 0.15; z-index: -1; }
-        .orb-2 { position: absolute; bottom: 20%; right: -10%; width: 35vw; height: 35vw; background: #991b1b; border-radius: 50%; filter: blur(90px); opacity: 0.15; z-index: -1; }
-
-        /* Ajustes para el Details (Técnica) */
-        details > summary { list-style: none; }
-        details > summary::-webkit-details-marker { display: none; }
+        .pricing-table {
+            background-color: #1a1a1a;
+            border-color: #00FF66;
+        }
+        .pricing-table:hover {
+            border-color: #00e657;
+        }
     </style>
 </head>
-<body class="antialiased min-h-screen flex flex-col">
-
-    <!-- FONDOS DINÁMICOS -->
-    <div class="bg-dynamic"></div>
-    <div class="orb-1 animate-float"></div>
-    <div class="orb-2 animate-float-delayed"></div>
-
-    <!-- ============================================== -->
-    <!-- SPLASH SCREEN / LANDING ENTRANCE -->
-    <!-- ============================================== -->
-    <div id="splash-screen" class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/95 backdrop-blur-md transition-opacity duration-700">
-        <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9IiMzMzMiIGZpbGwtb3BhY2l0eT0iMC4xIi8+PC9zdmc+')] opacity-50"></div>
-        
-        <div class="relative z-10 text-center px-6 animate-slide-up">
-            <div class="w-24 h-24 mx-auto bg-gradient-to-br from-red-500 to-red-900 rounded-full flex items-center justify-center mb-8 shadow-[0_0_40px_rgba(220,38,38,0.4)] animate-float">
-                <span class="font-display font-black text-white text-5xl tracking-tighter">L</span>
-            </div>
-            
-            <h1 class="text-4xl md:text-5xl font-display font-black text-white mb-2 uppercase tracking-wide">
-                Liss <span class="text-gradient-red">Fit Pro</span>
-            </h1>
-            <p class="text-gray-400 font-medium tracking-widest text-sm mb-12">ENTRENAMIENTO & NUTRICIÓN ÉLITE</p>
-            
-            <button onclick="enterApp()" class="relative inline-flex items-center justify-center px-8 py-4 font-bold text-white transition-all duration-200 bg-red-600 font-display rounded-full hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-600 animate-pulse-glow hover:scale-105">
-                INICIAR SESIÓN
-                <i class="fas fa-arrow-right ml-3"></i>
-            </button>
-            <p class="mt-6 text-[10px] text-gray-600 uppercase" id="welcome-back-msg">Bienvenida a tu zona de transformación</p>
+<body class="bg-gray-900 text-white">
+    <header class="bg-gray-800">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold">Gimnasio Pro</a>
+            <nav>
+                <ul class="flex space-x-6">
+                    <li><a href="#home" class="hover:text-gray-300">Inicio</a></li>
+                    <li><a href="#services" class="hover:text-gray-300">Servicios</a></li>
+                    <li><a href="#plans" class="hover:text-gray-300">Planes</a></li>
+                    <li><a href="#contact" class="hover:text-gray-300">Contacto</a></li>
+                </ul>
+            </nav>
+            <a href="#contact" class="cta-btn py-2 px-4 rounded-full text-white hover:bg-green-700 border-2 border-green-700 transition duration-300">Empieza Hoy</a>
         </div>
-    </div>
+    </header>
 
-    <!-- ============================================== -->
-    <!-- CONTENEDOR PRINCIPAL DE LA APP -->
-    <!-- ============================================== -->
-    <div id="app-container" class="opacity-0 transition-opacity duration-700 pointer-events-none flex-grow flex flex-col pb-20">
-        
-        <!-- Header -->
-        <header class="sticky top-0 z-50 glass-panel border-b border-red-900/30 shadow-lg">
-            <div class="container mx-auto px-4 h-16 flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-red-500 to-red-800 flex items-center justify-center shadow-[0_0_15px_rgba(220,38,38,0.4)]">
-                        <span class="font-display font-bold text-white text-lg">L</span>
-                    </div>
-                    <div>
-                        <h1 class="font-display font-bold text-lg leading-tight uppercase tracking-wide" id="header-title">Rutina <span class="text-red-500">PRO</span></h1>
-                        <p class="text-[10px] text-gray-400 uppercase tracking-widest" id="header-subtitle">Hipertrofia en Casa</p>
-                    </div>
-                </div>
-                <button onclick="resetData()" class="text-xs text-gray-500 hover:text-red-500 transition-colors p-2" title="Borrar datos del día">
-                    <i class="fas fa-rotate-left mr-1"></i> Reiniciar
-                </button>
-            </div>
-        </header>
-
-        <!-- ============================================== -->
-        <!-- VISTA 1: RUTINA -->
-        <!-- ============================================== -->
-        <div id="view-rutina" class="animate-fade-in block flex-grow">
-            <!-- Barra de Progreso -->
-            <div class="glass-panel border-b border-gray-900 sticky top-[64px] z-40">
-                <div class="container mx-auto px-4 py-3">
-                    <div class="flex justify-between items-end mb-2">
-                        <span class="text-xs font-bold text-gray-300 uppercase tracking-wider" id="progress-text">Progreso: 0%</span>
-                        <span class="text-xs text-red-500 font-bold bg-red-950/50 px-2 py-0.5 rounded border border-red-900/50" id="progress-fraction">0/0</span>
-                    </div>
-                    <div class="w-full h-1.5 bg-dark-200 rounded-full overflow-hidden">
-                        <div id="progress-bar" class="h-full bg-gradient-to-r from-red-600 to-red-400 w-0 transition-all duration-700 ease-out shadow-[0_0_10px_rgba(220,38,38,0.5)]"></div>
-                    </div>
-                </div>
-                
-                <!-- Navegación de Días -->
-                <nav class="pt-2 pb-3">
-                    <div class="container mx-auto">
-                        <div class="flex overflow-x-auto no-scrollbar px-4 gap-3 snap-x" id="days-nav"></div>
-                    </div>
-                </nav>
-            </div>
-
-            <main class="container mx-auto px-4 py-6" id="main-content"></main>
-        </div>
-
-        <!-- ============================================== -->
-        <!-- VISTA 2: PROGRESO Y CALCULADORAS -->
-        <!-- ============================================== -->
-        <div id="view-progreso" class="view-hidden animate-fade-in container mx-auto px-4 py-6 flex-grow">
-            <div class="glass-card rounded-2xl p-6 mb-6">
-                <h2 class="text-xl font-display font-bold text-white mb-1"><i class="fas fa-calculator text-red-500 mr-2"></i> Calculadora 1RM (PR)</h2>
-                <p class="text-xs text-gray-400 mb-5">Descubre tu repetición máxima teórica.</p>
-                <div class="grid grid-cols-2 gap-4 mb-5">
-                    <div>
-                        <label class="text-xs font-semibold text-gray-400 mb-1.5 block uppercase tracking-wider">Peso (kg/lb)</label>
-                        <input type="number" id="pr-weight" class="input-dark text-lg font-bold" placeholder="0">
-                    </div>
-                    <div>
-                        <label class="text-xs font-semibold text-gray-400 mb-1.5 block uppercase tracking-wider">Reps</label>
-                        <input type="number" id="pr-reps" class="input-dark text-lg font-bold" placeholder="0">
-                    </div>
-                </div>
-                <button onclick="calculatePR()" class="btn-red mb-4">Calcular PR</button>
-                <div id="pr-result" class="hidden bg-dark-300/80 border border-red-900/30 rounded-xl p-5 text-center mt-2 backdrop-blur-md">
-                    <span class="text-[10px] text-red-400 uppercase tracking-widest block mb-1 font-bold">Tu 1RM Estimado</span>
-                    <span class="text-4xl font-display font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400" id="pr-max-val">0</span><span class="text-gray-500 text-sm ml-1 font-bold">kg</span>
-                    <div class="mt-4 grid grid-cols-3 gap-2 text-xs text-gray-400 border-t border-gray-800/50 pt-4">
-                        <div class="bg-dark-400/50 rounded py-1 border border-gray-800">90% <br><strong id="pr-90" class="text-white text-sm">0</strong></div>
-                        <div class="bg-dark-400/50 rounded py-1 border border-gray-800">80% <br><strong id="pr-80" class="text-white text-sm">0</strong></div>
-                        <div class="bg-dark-400/50 rounded py-1 border border-gray-800">70% <br><strong id="pr-70" class="text-white text-sm">0</strong></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="glass-card rounded-2xl p-6 mb-6">
-                <h2 class="text-xl font-display font-bold text-white mb-1"><i class="fas fa-clipboard-list text-red-500 mr-2"></i> Registro de Cargas</h2>
-                <p class="text-xs text-gray-400 mb-5">Sobrecarga progresiva: anota tus pesos máximos.</p>
+    <section id="home" class="hero-section bg-cover bg-center py-20" style="background-image: url('https://source.unsplash.com/1600x900/?fitness,gym');">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-5xl font-bold mb-4">Transforma Tu Cuerpo, Transforma Tu Vida</h1>
+            <p class="text-xl mb-8">Únete a nuestra comunidad de expertos en fitness y alcanza tus objetivos de manera profesional.</p>
+            <form class="max-w-md mx-auto bg-gray-800 p-6 rounded-lg">
+                <h2 class="text-2xl font-bold mb-4">Solicita Tu Clase de Prueba Gratuita</h2>
                 <div class="mb-4">
-                    <select id="log-exercise" class="input-dark w-full text-sm font-semibold">
-                        <option value="Hip Thrust">Hip Thrust</option>
-                        <option value="Sentadilla Copa">Sentadilla Copa</option>
-                        <option value="Peso Muerto Rumano">Peso Muerto Rumano</option>
-                        <option value="Sentadilla Búlgara">Sentadilla Búlgara</option>
-                        <option value="Press Militar">Press Militar</option>
-                    </select>
+                    <label for="name" class="block text-sm font-medium mb-1">Nombre</label>
+                    <input type="text" id="name" class="w-full px-3 py-2 rounded bg-gray-700 text-white" required>
                 </div>
-                <div class="grid grid-cols-2 gap-3 mb-5">
-                    <input type="number" id="log-weight" class="input-dark" placeholder="Peso (kg)">
-                    <input type="number" id="log-reps" class="input-dark" placeholder="Reps">
+                <div class="mb-4">
+                    <label for="email" class="block text-sm font-medium mb-1">Email</label>
+                    <input type="email" id="email" class="w-full px-3 py-2 rounded bg-gray-700 text-white" required>
                 </div>
-                <button onclick="saveLiftingLog()" class="btn-red mb-5 text-sm" id="btn-save-log">Añadir Registro</button>
-                <div class="bg-dark-400/50 rounded-xl p-3 border border-gray-800 max-h-48 overflow-y-auto no-scrollbar" id="log-list"></div>
-            </div>
+                <button type="submit" class="cta-btn py-2 px-4 rounded-full text-white hover:bg-green-700 border-2 border-green-700 transition duration-300">Solicitar</button>
+            </form>
+        </div>
+    </section>
 
-            <div class="glass-card rounded-2xl p-6">
-                <h2 class="text-xl font-display font-bold text-white mb-1"><i class="fas fa-ruler text-red-500 mr-2"></i> Mis Medidas</h2>
-                <p class="text-xs text-gray-400 mb-5">El peso miente, la cinta métrica no.</p>
-                <div class="grid grid-cols-2 gap-4 mb-5">
-                    <div>
-                        <label class="text-[10px] uppercase font-bold text-gray-500 mb-1 block">Peso (kg)</label>
-                        <input type="number" id="meas-weight" class="input-dark text-center font-bold">
-                    </div>
-                    <div>
-                        <label class="text-[10px] uppercase font-bold text-gray-500 mb-1 block">Cintura (cm)</label>
-                        <input type="number" id="meas-waist" class="input-dark text-center font-bold">
-                    </div>
-                    <div>
-                        <label class="text-[10px] uppercase font-bold text-gray-500 mb-1 block">Glúteo (cm)</label>
-                        <input type="number" id="meas-hips" class="input-dark text-center font-bold">
-                    </div>
-                    <div>
-                        <label class="text-[10px] uppercase font-bold text-gray-500 mb-1 block">Pierna (cm)</label>
-                        <input type="number" id="meas-leg" class="input-dark text-center font-bold">
-                    </div>
+    <section id="services" class="py-20">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-12 text-center">Nuestros Servicios</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="service-card bg-gray-800 p-6 rounded-lg text-center hover:shadow-lg hover:scale-105 transition duration-300">
+                    <h3 class="text-2xl font-bold mb-4">Entrenamientos Personalizados</h3>
+                    <p class="text-lg">Obtén un programa de entrenamiento personalizado para tus metas específicas.</p>
                 </div>
-                <button onclick="saveMeasurements()" class="bg-dark-200 border border-gray-700 hover:border-red-500 text-white font-semibold py-3 px-4 rounded-xl w-full transition-all text-sm hover:shadow-[0_0_15px_rgba(220,38,38,0.2)]" id="btn-save-meas">
-                    Actualizar Medidas
-                </button>
-                <p class="text-[10px] text-gray-500 text-center mt-3 font-medium tracking-wide" id="meas-date"></p>
+                <div class="service-card bg-gray-800 p-6 rounded-lg text-center hover:shadow-lg hover:scale-105 transition duration-300">
+                    <h3 class="text-2xl font-bold mb-4">Planes de Nutrición</h3>
+                    <p class="text-lg">Alimentación balanceada y profesional para ayudarte a alcanzar tus objetivos.</p>
+                </div>
+                <div class="service-card bg-gray-800 p-6 rounded-lg text-center hover:shadow-lg hover:scale-105 transition duration-300">
+                    <h3 class="text-2xl font-bold mb-4">Rutinas de Fuerza</h3>
+                    <p class="text-lg">Fortalece tu cuerpo con nuestras rutinas de fuerza intensivas y efectivas.</p>
+                </div>
+                <div class="service-card bg-gray-800 p-6 rounded-lg text-center hover:shadow-lg hover:scale-105 transition duration-300">
+                    <h3 class="text-2xl font-bold mb-4">Asesoría Online</h3>
+                    <p class="text-lg">Recibe asesoramiento personalizado desde la comodidad de tu casa.</p>
+                </div>
             </div>
         </div>
+    </section>
 
-        <!-- ============================================== -->
-        <!-- VISTA 3: NUTRICIÓN TIPO FITIA -->
-        <!-- ============================================== -->
-        <div id="view-nutricion" class="view-hidden animate-fade-in container mx-auto px-4 py-6 flex-grow">
-            <div class="relative rounded-2xl p-6 mb-6 overflow-hidden border border-red-900/30 shadow-[0_10px_30px_rgba(153,27,27,0.15)]">
-                <div class="absolute inset-0 bg-gradient-to-br from-red-950/80 to-dark-400 z-0"></div>
-                <div class="relative z-10">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-xl font-display font-bold text-white"><i class="fas fa-fire text-red-500 mr-2"></i> Macros del Día</h2>
-                        <button onclick="document.getElementById('cal-calculator').classList.toggle('hidden'); playAudio('click');" class="text-[10px] font-bold text-red-400 bg-red-950/50 px-2 py-1 rounded border border-red-900/50 uppercase">Mis Metas</button>
-                    </div>
-                    
-                    <div id="cal-calculator" class="hidden bg-dark-400/80 backdrop-blur-md rounded-xl p-5 mb-6 border border-gray-800">
-                        <h3 class="text-xs font-bold text-gray-300 mb-4 uppercase tracking-wider">Calculadora Inteligente</h3>
-                        <div class="grid grid-cols-2 gap-3 mb-4">
-                            <input type="number" id="calc-age" class="input-dark text-sm" placeholder="Edad">
-                            <input type="number" id="calc-height" class="input-dark text-sm" placeholder="Altura (cm)">
-                            <input type="number" id="calc-weight" class="input-dark text-sm" placeholder="Peso (kg)">
-                            <select id="calc-goal" class="input-dark text-sm text-gray-300">
-                                <option value="deficit">Perder Grasa</option>
-                                <option value="maintain">Mantenimiento</option>
-                                <option value="surplus">Ganar Masa</option>
-                            </select>
-                        </div>
-                        <button onclick="calculateMacros()" class="btn-red text-sm py-2 shadow-lg">Establecer Meta</button>
-                    </div>
-
-                    <div class="mb-5">
-                        <div class="flex justify-between items-end mb-2">
-                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider"><i class="fas fa-bolt text-yellow-500 mr-1"></i> Calorías</span>
-                            <span class="text-sm font-bold text-white"><span id="nutri-cal-current">0</span> <span class="text-xs text-gray-500 font-normal">/ <span id="nutri-cal-goal">2000</span></span></span>
-                        </div>
-                        <div class="w-full h-2.5 bg-dark-500/50 rounded-full overflow-hidden border border-gray-800/50">
-                            <div id="bar-calories" class="h-full bg-gradient-to-r from-yellow-500 to-orange-500 w-0 transition-all duration-700 shadow-[0_0_10px_rgba(245,158,11,0.5)]"></div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div class="flex justify-between items-end mb-2">
-                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider"><i class="fas fa-drumstick-bite text-blue-400 mr-1"></i> Proteína</span>
-                            <span class="text-sm font-bold text-white"><span id="nutri-pro-current">0</span> <span class="text-xs text-gray-500 font-normal">/ <span id="nutri-pro-goal">120</span>g</span></span>
-                        </div>
-                        <div class="w-full h-2.5 bg-dark-500/50 rounded-full overflow-hidden border border-gray-800/50">
-                            <div id="bar-protein" class="h-full bg-gradient-to-r from-blue-600 to-cyan-400 w-0 transition-all duration-700 shadow-[0_0_10px_rgba(56,189,248,0.5)]"></div>
-                        </div>
-                    </div>
+    <section id="plans" class="bg-gray-800 py-20">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-12 text-center">Nuestros Planes</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="pricing-table bg-gray-900 p-8 rounded-lg text-center hover:border-green-700 transition duration-300">
+                    <h3 class="text-2xl font-bold mb-4">Básico</h3>
+                    <p class="text-4xl font-bold mb-8">$29/mes</p>
+                    <ul class="mb-8">
+                        <li>Acceso al gimnasio</li>
+                        <li>1 clase de entrenamiento personalizada</li>
+                    </ul>
+                    <a href="#contact" class="cta-btn py-2 px-4 rounded-full text-white hover:bg-green-700 border-2 border-green-700 transition duration-300">Inscribirme</a>
                 </div>
-            </div>
-
-            <div class="glass-card rounded-2xl p-6 mb-6">
-                <h3 class="text-sm font-display font-bold text-white mb-4 uppercase tracking-wider">Añadir Comida</h3>
-                <div class="space-y-3 mb-5">
-                    <input type="text" id="meal-name" class="input-dark font-medium" placeholder="Ej. Avena con proteína">
-                    <div class="grid grid-cols-2 gap-3">
-                        <div class="relative">
-                            <span class="absolute right-3 top-2.5 text-xs text-gray-500 font-bold">kcal</span>
-                            <input type="number" id="meal-cal" class="input-dark pr-10 font-bold" placeholder="0">
-                        </div>
-                        <div class="relative">
-                            <span class="absolute right-3 top-2.5 text-xs text-gray-500 font-bold">g</span>
-                            <input type="number" id="meal-pro" class="input-dark pr-8 font-bold" placeholder="Prot">
-                        </div>
-                    </div>
+                <div class="pricing-table bg-gray-900 p-8 rounded-lg text-center hover:border-green-700 transition duration-300">
+                    <h3 class="text-2xl font-bold mb-4">Pro</h3>
+                    <p class="text-4xl font-bold mb-8">$49/mes</p>
+                    <ul class="mb-8">
+                        <li>Acceso al gimnasio</li>
+                        <li>2 clases de entrenamiento personalizadas</li>
+                        <li>Plan de nutrición</li>
+                    </ul>
+                    <a href="#contact" class="cta-btn py-2 px-4 rounded-full text-white hover:bg-green-700 border-2 border-green-700 transition duration-300">Inscribirme</a>
                 </div>
-                <button onclick="addMeal()" class="btn-red text-sm py-3"><i class="fas fa-plus mr-2"></i> Registrar</button>
-            </div>
-
-            <div>
-                <div class="flex justify-between items-center mb-4 px-1">
-                    <h3 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Diario de Hoy</h3>
-                    <button onclick="clearMeals()" class="text-[10px] font-bold text-red-500 bg-red-950/30 px-2 py-1 rounded">VACIAR</button>
+                <div class="pricing-table bg-gray-900 p-8 rounded-lg text-center hover:border-green-700 transition duration-300">
+                    <h3 class="text-2xl font-bold mb-4">VIP</h3>
+                    <p class="text-4xl font-bold mb-8">$69/mes</p>
+                    <ul class="mb-8">
+                        <li>Acceso al gimnasio</li>
+                        <li>3 clases de entrenamiento personalizadas</li>
+                        <li>Plan de nutrición</li>
+                        <li>Asesoría personalizada</li>
+                    </ul>
+                    <a href="#contact" class="cta-btn py-2 px-4 rounded-full text-white hover:bg-green-700 border-2 border-green-700 transition duration-300">Inscribirme</a>
                 </div>
-                <div id="meals-list" class="space-y-3"></div>
             </div>
         </div>
+    </section>
 
-        <!-- ============================================== -->
-        <!-- NAVEGACIÓN INFERIOR (TABS) -->
-        <!-- ============================================== -->
-        <nav class="fixed bottom-0 left-0 w-full glass-panel z-50 pb-safe border-t border-red-900/20">
-            <div class="flex justify-around items-center h-16 max-w-md mx-auto px-2">
-                <button onclick="switchAppView('rutina')" id="tab-rutina" class="nav-tab flex flex-col items-center justify-center w-full h-full text-red-500 transition-all duration-300">
-                    <i class="fas fa-dumbbell text-xl mb-1 transform transition-transform"></i>
-                    <span class="text-[9px] font-bold uppercase tracking-wider">Rutina</span>
-                </button>
-                <button onclick="switchAppView('progreso')" id="tab-progreso" class="nav-tab flex flex-col items-center justify-center w-full h-full text-gray-500 hover:text-red-400 transition-all duration-300">
-                    <i class="fas fa-chart-line text-xl mb-1 transform transition-transform"></i>
-                    <span class="text-[9px] font-bold uppercase tracking-wider">Progreso</span>
-                </button>
-                <button onclick="switchAppView('nutricion')" id="tab-nutricion" class="nav-tab flex flex-col items-center justify-center w-full h-full text-gray-500 hover:text-red-400 transition-all duration-300">
-                    <i class="fas fa-apple-whole text-xl mb-1 transform transition-transform"></i>
-                    <span class="text-[9px] font-bold uppercase tracking-wider">Nutrición</span>
-                </button>
-                <button onclick="playAudio('click'); alert('REGLAS DE ORO:\n1. Duerme 8 horas.\n2. Llega a tu meta de proteína.\n3. Sube el peso o reps cada semana.\n¡Tú puedes, Liss!');" class="flex flex-col items-center justify-center w-full h-full text-gray-500 hover:text-white transition-all duration-300">
-                    <i class="fas fa-gem text-xl mb-1 transform transition-transform"></i>
-                    <span class="text-[9px] font-bold uppercase tracking-wider">Élite</span>
-                </button>
-            </div>
-        </nav>
-    </div>
-
-    <!-- SCRIPTS CORE Y AUDIO -->
-    <script>
-        // === SISTEMA DE AUDIO NATIVO (Web Audio API) ===
-        let audioCtx;
-        function initAudio() {
-            if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
-            if (audioCtx.state === 'suspended') { audioCtx.resume(); }
-        }
-
-        function playTone(freq, type, duration, vol) {
-            if (!audioCtx) return;
-            const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
-            osc.type = type; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-            gain.gain.setValueAtTime(vol, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            osc.start(); osc.stop(audioCtx.currentTime + duration);
-        }
-
-        function playAudio(type) {
-            try {
-                initAudio();
-                if (type === 'click') { playTone(600, 'sine', 0.1, 0.05); } 
-                else if (type === 'check') { playTone(800, 'sine', 0.1, 0.05); setTimeout(() => playTone(1200, 'sine', 0.15, 0.05), 80); } 
-                else if (type === 'success') { playTone(440, 'triangle', 0.3, 0.1); setTimeout(() => playTone(554.37, 'triangle', 0.3, 0.1), 100); setTimeout(() => playTone(659.25, 'triangle', 0.4, 0.1), 200); setTimeout(() => playTone(880, 'triangle', 0.6, 0.15), 300); }
-            } catch(e) { console.log("Audio not supported or blocked"); }
-        }
-
-        function enterApp() {
-            initAudio(); playAudio('success'); 
-            const splash = document.getElementById('splash-screen'); const app = document.getElementById('app-container');
-            splash.style.opacity = '0';
-            setTimeout(() => { splash.style.display = 'none'; app.style.pointerEvents = 'auto'; app.style.opacity = '1'; }, 700);
-        }
-
-        // === DATOS DE LA RUTINA ACTUALIZADOS (NUEVA RUTINA DE LISS) ===
-        const routineData = [
-            { id: 'day1', title: 'Día 1', subtitle: 'Pierna (Cuád + Glúteo)', focus: 'Enfoque en tren inferior.', icon: 'fa-fire', exercises: [ 
-                { id: 'd1_e1', name: 'Sentadilla con barra', sets: 4, reps: '6-10', rest: '90s', tip: 'Empuja con los talones.', execution: 'Coloca la barra sobre los hombros, baja llevando la cadera hacia atrás y doblando rodillas hasta que los muslos estén paralelos al suelo. Mantén la espalda recta y sube empujando con los talones.' }, 
-                { id: 'd1_e2', name: 'Hip Thrust', sets: 4, reps: '8-12', rest: '90s', tip: 'Aprieta los glúteos arriba.', execution: 'Apoya la espalda en un banco, empuja la cadera hacia arriba hasta formar una línea recta hombros-cadera-rodillas. Aprieta los glúteos arriba.' }, 
-                { id: 'd1_e3', name: 'Prensa inclinada', sets: 3, reps: '10-12', rest: '90s', tip: 'No bloquees rodillas al subir.', execution: 'Baja la plataforma controladamente hasta que las rodillas formen 90°, luego empuja sin bloquearlas completamente.' }, 
-                { id: 'd1_e4', name: 'Zancadas', sets: 3, reps: '10 / pierna', rest: '60s', tip: 'Paso largo hacia adelante.', execution: 'Da un paso largo hacia adelante, baja la rodilla trasera y vuelve empujando con la pierna delantera.' },
-                { id: 'd1_e5', name: 'Extensión de cuádriceps', sets: 3, reps: '15-20', rest: '60s', tip: 'Mantén control al bajar.', execution: 'Extiende las piernas hasta arriba y baja lentamente, manteniendo control.' }
-            ] },
-            { id: 'day2', title: 'Día 2', subtitle: 'Torso Empuje', focus: 'Tren superior', icon: 'fa-hand-rock', exercises: [ 
-                { id: 'd2_e1', name: 'Press hombro mancuernas', sets: 4, reps: '8-10', rest: '90s', tip: 'No arquees la espalda.', execution: 'Desde los hombros, empuja las mancuernas hacia arriba sin arquear la espalda y baja controlado.' }, 
-                { id: 'd2_e2', name: 'Press inclinado', sets: 3, reps: '10-12', rest: '90s', tip: 'Movimiento controlado.', execution: 'En banco inclinado, baja las mancuernas al pecho y empuja hacia arriba controladamente.' }, 
-                { id: 'd2_e3', name: 'Elevaciones laterales', sets: 4, reps: '12-15', rest: '60s', tip: 'Sube sin usar impulso.', execution: 'Levanta los brazos hacia los lados hasta la altura de los hombros sin usar impulso.' }, 
-                { id: 'd2_e4', name: 'Tríceps en polea', sets: 3, reps: '12-15', rest: '60s', tip: 'Codos pegados al cuerpo.', execution: 'Extiende los brazos hacia abajo manteniendo los codos pegados al cuerpo.' },
-                { id: 'd2_e5', name: 'Plancha', sets: 3, reps: 'Al fallo', rest: '60s', tip: 'Aprieta bien el abdomen.', execution: 'Mantén el cuerpo recto apoyado en antebrazos y pies, apretando el abdomen.' }
-            ] },
-            { id: 'day3', title: 'Día 3', subtitle: 'Glúteo + Posterior', focus: 'Cadena posterior.', icon: 'fa-peach', exercises: [ 
-                { id: 'd3_e1', name: 'Peso muerto rumano', sets: 4, reps: '8-10', rest: '90s', tip: 'Espalda recta, cadera atrás.', execution: 'Baja el peso deslizando por las piernas mientras llevas la cadera hacia atrás, manteniendo la espalda recta, luego sube contrayendo glúteos.' }, 
-                { id: 'd3_e2', name: 'Hip Thrust pesado', sets: 4, reps: '6-8', rest: '90s', tip: 'Más peso, control total.', execution: 'Igual que el día 1, pero usando más peso y manteniendo control total.' }, 
-                { id: 'd3_e3', name: 'Curl femoral', sets: 3, reps: '12-15', rest: '60s', tip: 'Baja lento.', execution: 'Flexiona las piernas llevando los talones hacia los glúteos y baja lento.' }, 
-                { id: 'd3_e4', name: 'Patada de glúteo', sets: 3, reps: '12-15', rest: '60s', tip: 'Aprieta el glúteo al final.', execution: 'Empuja la pierna hacia atrás en polea o máquina, apretando el glúteo al final.' },
-                { id: 'd3_e5', name: 'Abducciones', sets: 3, reps: '20', rest: '60s', tip: 'Abre contra resistencia.', execution: 'Abre las piernas contra resistencia (máquina o banda) de forma controlada.' }
-            ] },
-            { id: 'day4', title: 'Día 4', subtitle: 'Torso Tirón', focus: 'Tonificación tren superior.', icon: 'fa-dumbbell', exercises: [ 
-                { id: 'd4_e1', name: 'Jalón al pecho', sets: 4, reps: '8-12', rest: '90s', tip: 'Saca el pecho hacia afuera.', execution: 'Lleva la barra al pecho sacando el pecho hacia afuera, luego sube controladamente.' }, 
-                { id: 'd4_e2', name: 'Remo con barra', sets: 4, reps: '8-10', rest: '90s', tip: 'Espalda recta en la inclinación.', execution: 'Inclina el torso y lleva la barra hacia el abdomen manteniendo la espalda recta.' }, 
-                { id: 'd4_e3', name: 'Remo mancuerna', sets: 3, reps: '10', rest: '60s', tip: 'Apoyo firme en el banco.', execution: 'Apoyado en banco, lleva la mancuerna hacia el costado del torso.' }, 
-                { id: 'd4_e4', name: 'Face pull', sets: 3, reps: '15', rest: '60s', tip: 'Abre los codos al tirar.', execution: 'Tira de la cuerda hacia la cara abriendo los codos.' },
-                { id: 'd4_e5', name: 'Curl bíceps', sets: 3, reps: '12', rest: '60s', tip: 'No balancees el cuerpo.', execution: 'Flexiona los brazos sin balancear el cuerpo.' }
-            ] },
-            { id: 'day5', title: 'Día 5', subtitle: 'Full Body + Metabólico', focus: 'Quema calórica.', icon: 'fa-bolt', exercises: [ 
-                { id: 'd5_e1', name: 'Sentadilla goblet', sets: 4, reps: '15', rest: '0s', tip: 'Parte del circuito (4 Rondas).', execution: 'Sostén una mancuerna en el pecho y baja en sentadilla profunda.' }, 
-                { id: 'd5_e2', name: 'Kettlebell swings', sets: 4, reps: '20', rest: '0s', tip: 'Fuerza de cadera, no de brazos.', execution: 'Impulsa la pesa con la cadera (no brazos), en un movimiento explosivo.' }, 
-                { id: 'd5_e3', name: 'Burpees', sets: 4, reps: '10', rest: '0s', tip: 'Haz el salto explosivo.', execution: 'Baja al suelo, haz una flexión y salta al subir.' }, 
-                { id: 'd5_e4', name: 'Remo TRX', sets: 4, reps: '12', rest: '0s', tip: 'Cuerpo recto.', execution: 'Inclina el cuerpo hacia atrás y tira con la espalda hacia las asas.' },
-                { id: 'd5_e5', name: 'Mountain climbers', sets: 4, reps: '30 segs', rest: '90s', tip: 'Descansa al final de la ronda.', execution: 'Lleva rodillas al pecho alternando rápidamente.' }
-            ] }
-        ];
-
-        // === ESTADO Y PERSISTENCIA ===
-        let appState = {
-            activeView: 'rutina', activeDay: 'day1', completed: {},
-            measurements: { weight: '', waist: '', hips: '', leg: '', date: '' }, logs: [],
-            nutrition: { goal: { calories: 1800, protein: 110 }, meals: [] }
-        };
-
-        function loadState() {
-            try {
-                const saved = localStorage.getItem('lissUltimateState');
-                if (saved) {
-                    const parsedData = JSON.parse(saved);
-                    appState = { ...appState, ...parsedData, measurements: { ...appState.measurements, ...(parsedData.measurements || {}) }, nutrition: { ...appState.nutrition, ...(parsedData.nutrition || {}) } };
-                    document.getElementById('welcome-back-msg').innerText = "¡Qué bueno verte de nuevo, Liss!";
-                }
-            } catch(e) { console.error(e); }
-            populateInputs(); renderNutrition(); renderLogs();
-        }
-
-        function saveState() {
-            try { localStorage.setItem('lissUltimateState', JSON.stringify(appState)); } catch(e) {}
-        }
-
-        function resetData() {
-            playAudio('click');
-            if(confirm("¿Reiniciar progreso de RUTINA de la semana?")) {
-                appState.completed = {}; saveState(); renderRoutineNav(); renderRoutineContent(); updateProgressBar();
-            }
-        }
-
-        // === NAVEGACIÓN ===
-        function switchAppView(viewId) {
-            playAudio('click');
-            ['rutina', 'progreso', 'nutricion'].forEach(v => {
-                const el = document.getElementById('view-' + v); if(el) el.classList.add('view-hidden');
-                const tab = document.getElementById('tab-' + v); if(tab) { tab.classList.remove('text-red-500', 'scale-110'); tab.classList.add('text-gray-500'); }
-            });
-            const activeEl = document.getElementById('view-' + viewId); if(activeEl) activeEl.classList.remove('view-hidden');
-            const activeTab = document.getElementById('tab-' + viewId); if(activeTab) { activeTab.classList.remove('text-gray-500'); activeTab.classList.add('text-red-500', 'scale-110'); }
-            
-            const titleMap = { 'rutina': 'Rutina <span class="text-red-500">PRO</span>', 'progreso': 'Tu <span class="text-red-500">Progreso</span>', 'nutricion': 'Plan <span class="text-red-500">Nutrición</span>'};
-            const subMap = { 'rutina': 'Hipertrofia en Casa', 'progreso': 'Medidas y Marcas', 'nutricion': 'Macros Diarios'};
-            document.getElementById('header-title').innerHTML = titleMap[viewId];
-            document.getElementById('header-subtitle').innerText = subMap[viewId];
-            appState.activeView = viewId; saveState();
-        }
-
-        // === VISTA 1: RUTINA ===
-        function renderRoutineNav() {
-            const navContainer = document.getElementById('days-nav'); if(!navContainer) return;
-            navContainer.innerHTML = '';
-            routineData.forEach(day => {
-                const isActive = appState.activeDay === day.id;
-                const completedCount = day.exercises.filter(e => appState.completed[e.id]).length;
-                const isAllDone = completedCount === day.exercises.length && day.exercises.length > 0;
-
-                const btn = document.createElement('button');
-                btn.onclick = () => { playAudio('click'); appState.activeDay = day.id; saveState(); renderRoutineNav(); renderRoutineContent(); updateProgressBar(); };
-                btn.className = `snap-center cursor-pointer shrink-0 rounded-xl px-6 py-2.5 transition-all duration-300 border relative overflow-hidden shadow-lg ${isActive ? 'bg-gradient-to-r from-red-600 to-red-800 border-red-400 text-white shadow-[0_0_15px_rgba(220,38,38,0.4)] scale-105' : 'bg-dark-300/80 border-gray-800 text-gray-400 hover:border-gray-600'}`;
-                btn.innerHTML = `<span class="font-display font-bold text-sm z-10 relative">${day.title}</span>${isAllDone ? '<div class="absolute top-1 right-1 text-green-400"><i class="fas fa-check-circle text-[10px]"></i></div>' : ''}`;
-                navContainer.appendChild(btn);
-            });
-        }
-
-        function toggleExecution(id) {
-            playAudio('click');
-        }
-
-        function renderRoutineContent() {
-            const container = document.getElementById('main-content'); if(!container) return;
-            const day = routineData.find(d => d.id === appState.activeDay); if(!day) return;
-            
-            let html = `<div class="mb-6 animate-fade-in"><h2 class="text-3xl font-display font-black text-white tracking-tight"><i class="fas ${day.icon} text-red-500 mr-2 drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"></i>${day.subtitle}</h2></div>`;
-            
-            day.exercises.forEach((ex, idx) => {
-                const isCompleted = !!appState.completed[ex.id];
-                const animDelay = `style="animation-delay: ${idx * 0.1}s; opacity: 0; animation-fill-mode: forwards;"`;
-                html += `
-                <div class="glass-card rounded-2xl border ${isCompleted ? 'border-red-500 shadow-[0_0_20px_rgba(220,38,38,0.2)] bg-red-950/10' : 'border-gray-800/50'} p-5 mb-5 transition-all duration-300 animate-slide-up" ${animDelay}>
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="pr-3">
-                            <span class="text-[10px] font-bold text-red-400 uppercase tracking-widest bg-red-900/20 px-2 py-1 rounded">Ejercicio ${idx + 1}</span>
-                            <h3 class="text-lg font-bold text-white leading-tight mt-2">${ex.name}</h3>
-                        </div>
-                        <label class="checkbox-custom cursor-pointer mt-1 flex-shrink-0">
-                            <input type="checkbox" class="sr-only" ${isCompleted ? 'checked' : ''} onchange="toggleExercise('${ex.id}', this.checked)">
-                            <div class="w-8 h-8 rounded-xl border-2 border-gray-600 flex items-center justify-center bg-dark-400"><svg class="w-4 h-4 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div>
-                        </label>
-                    </div>
-                    <div class="grid grid-cols-2 gap-3 mb-3 text-center">
-                        <div class="bg-dark-500/50 rounded-xl p-2 border border-gray-800/50"><span class="block text-gray-500 text-[9px] uppercase tracking-wider font-bold">Series x Reps</span><span class="font-bold text-white text-sm">${ex.sets} <span class="text-gray-500 text-xs">x</span> ${ex.reps}</span></div>
-                        <div class="bg-dark-500/50 rounded-xl p-2 border border-gray-800/50"><span class="block text-gray-500 text-[9px] uppercase tracking-wider font-bold">Descanso</span><span class="font-bold text-red-400 text-sm"><i class="far fa-clock mr-1 text-xs"></i>${ex.rest}</span></div>
-                    </div>
-                    
-                    <div class="text-[11px] text-gray-300 bg-dark-400/30 p-3 rounded-xl border-l-2 border-l-red-500 mt-4 mb-2 leading-relaxed font-medium">
-                        <i class="fas fa-lightbulb text-red-500 mr-1"></i> ${ex.tip}
-                    </div>
-
-                    <!-- APARTADO DE EXPLICACIÓN -->
-                    <details class="mt-2 group" onclick="toggleExecution()">
-                        <summary class="text-[10px] font-bold text-gray-400 uppercase tracking-widest cursor-pointer flex items-center gap-2 hover:text-white transition-colors bg-dark-300/40 py-2 px-3 rounded-lg border border-gray-800/50">
-                            <i class="fas fa-chevron-down text-red-500 transform group-open:rotate-180 transition-transform duration-300"></i>
-                            Ver Técnica de Ejecución
-                        </summary>
-                        <div class="mt-3 text-[11px] text-gray-300 leading-relaxed p-4 bg-black/40 rounded-xl border border-gray-800/50 shadow-inner">
-                            ${ex.execution}
-                        </div>
-                    </details>
-                </div>`;
-            });
-            container.innerHTML = html;
-        }
-
-        function toggleExercise(id, isCompleted) {
-            appState.completed[id] = isCompleted;
-            saveState(); 
-            
-            const day = routineData.find(d => d.id === appState.activeDay);
-            const total = day.exercises.length;
-            const completed = day.exercises.filter(ex => appState.completed[ex.id]).length;
-            
-            if(isCompleted) {
-                if(completed === total) playAudio('success');
-                else playAudio('check');
-            } else {
-                playAudio('click');
-            }
-            
-            renderRoutineNav(); 
-            renderRoutineContent(); 
-            updateProgressBar();
-        }
-
-        function updateProgressBar() {
-            const bar = document.getElementById('progress-bar'); const fraction = document.getElementById('progress-fraction'); const text = document.getElementById('progress-text');
-            if(!bar || !fraction || !text) return;
-            const day = routineData.find(d => d.id === appState.activeDay); if(!day) return;
-            const total = day.exercises.length; const completed = day.exercises.filter(ex => appState.completed[ex.id]).length;
-            const pct = total === 0 ? 0 : Math.round((completed/total)*100);
-            
-            bar.style.width = `${pct}%`; fraction.innerText = `${completed}/${total}`;
-            text.innerText = pct === 100 ? '¡MISIÓN CUMPLIDA! 🎉' : `PROGRESO: ${pct}%`;
-            
-            if(pct === 100) { bar.classList.replace('from-red-600', 'from-emerald-500'); bar.classList.replace('to-red-400', 'to-emerald-400'); text.classList.replace('text-gray-300', 'text-emerald-400'); fraction.classList.replace('text-red-500', 'text-emerald-400'); fraction.classList.replace('border-red-900/50', 'border-emerald-900/50'); fraction.classList.replace('bg-red-950/50', 'bg-emerald-950/50'); } 
-            else { bar.classList.replace('from-emerald-500', 'from-red-600'); bar.classList.replace('to-emerald-400', 'to-red-400'); text.classList.replace('text-emerald-400', 'text-gray-300'); fraction.classList.replace('text-emerald-400', 'text-red-500'); fraction.classList.replace('border-emerald-900/50', 'border-red-900/50'); fraction.classList.replace('bg-emerald-950/50', 'bg-red-950/50'); }
-        }
-
-        // === VISTA 2: PROGRESO ===
-        function calculatePR() {
-            playAudio('click');
-            const w = parseFloat(document.getElementById('pr-weight').value); const r = parseInt(document.getElementById('pr-reps').value);
-            if(isNaN(w) || isNaN(r) || r < 1 || w <= 0) { alert("Ingresa datos válidos."); return; }
-            const max = Math.round(w * (1 + 0.0333 * r));
-            const resultDiv = document.getElementById('pr-result'); resultDiv.classList.remove('hidden'); resultDiv.classList.add('animate-scale-in');
-            document.getElementById('pr-max-val').innerText = max; document.getElementById('pr-90').innerText = Math.round(max * 0.90); document.getElementById('pr-80').innerText = Math.round(max * 0.80); document.getElementById('pr-70').innerText = Math.round(max * 0.70);
-            playAudio('check');
-        }
-
-        function saveMeasurements() {
-            playAudio('click');
-            appState.measurements = { weight: document.getElementById('meas-weight').value, waist: document.getElementById('meas-waist').value, hips: document.getElementById('meas-hips').value, leg: document.getElementById('meas-leg').value, date: new Date().toLocaleDateString() };
-            saveState(); const btn = document.getElementById('btn-save-meas'); const originalText = btn.innerText; btn.innerText = "¡Guardado con éxito!"; btn.classList.add("border-emerald-500", "text-emerald-400");
-            setTimeout(() => { btn.innerText = originalText; btn.classList.remove("border-emerald-500", "text-emerald-400"); }, 2000);
-            populateInputs(); playAudio('check');
-        }
-
-        function saveLiftingLog() {
-            playAudio('click');
-            const ex = document.getElementById('log-exercise').value; const w = parseFloat(document.getElementById('log-weight').value); const r = parseInt(document.getElementById('log-reps').value);
-            if(isNaN(w) || isNaN(r)) { alert("Datos inválidos."); return; }
-            if(!appState.logs) appState.logs = [];
-            appState.logs.unshift({ date: new Date().toLocaleDateString(), exercise: ex, weight: w, reps: r });
-            if(appState.logs.length > 15) appState.logs.pop();
-            saveState(); document.getElementById('log-weight').value = ''; document.getElementById('log-reps').value = ''; renderLogs(); playAudio('check');
-        }
-
-        function renderLogs() {
-            const list = document.getElementById('log-list'); if(!list) return;
-            if(!appState.logs || appState.logs.length === 0) { list.innerHTML = '<p class="text-center text-xs text-gray-500 py-4 font-medium">Aún no hay registros de carga.</p>'; return; }
-            list.innerHTML = appState.logs.map((log, i) => `
-                <div class="flex justify-between items-center text-sm border-b border-gray-800/50 py-3 last:border-0 animate-slide-up" style="animation-delay: ${i*0.05}s">
-                    <div><span class="text-white font-bold block text-xs">${log.exercise}</span><span class="text-[9px] font-bold text-gray-500 tracking-wider">${log.date}</span></div>
-                    <div class="text-right bg-dark-500/50 px-3 py-1.5 rounded border border-gray-800/50"><span class="text-red-400 font-bold">${log.weight} kg</span> <span class="text-gray-500 text-[10px] ml-1">x ${log.reps}</span></div>
+    <footer class="bg-gray-800 py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center">
+                <div class="text-center">
+                    <p class="mb-4">Gimnasio Profesional y Exclusivo</p>
+                    <p class="mb-2">Email: info@gimnasio.pro</p>
+                    <p class="mb-2">Teléfono: +123 456 7890</p>
+                    <p class="mb-2">Dirección: Calle 123, Ciudad, País</p>
                 </div>
-            `).join('');
-        }
+                <div class="flex space-x-6">
+                    <a href="#" class="text-2xl hover:text-gray-300"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-2xl hover:text-gray-300"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-2xl hover:text-gray-300"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
-        function populateInputs() {
-            const m = appState.measurements; if(!m) return;
-            const ids = ['weight', 'waist', 'hips', 'leg'];
-            ids.forEach(id => { const el = document.getElementById('meas-'+id); if(el && m[id]) el.value = m[id]; });
-            const dateSpan = document.getElementById('meas-date'); if(dateSpan && m.date) dateSpan.innerText = "Última actualización: " + m.date;
-        }
-
-        // === VISTA 3: NUTRICIÓN ===
-        function calculateMacros() {
-            playAudio('click');
-            const age = parseInt(document.getElementById('calc-age').value); const height = parseInt(document.getElementById('calc-height').value); const weight = parseFloat(document.getElementById('calc-weight').value); const goal = document.getElementById('calc-goal').value;
-            if(isNaN(age) || isNaN(height) || isNaN(weight) || age <= 0 || height <= 0 || weight <= 0) { alert("Completa los datos correctamente."); return; }
-            let bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161; let tdee = bmr * 1.375; let targetCals = tdee;
-            if(goal === 'deficit') targetCals -= 400; if(goal === 'surplus') targetCals += 300;
-            if(!appState.nutrition) appState.nutrition = { goal: {}, meals: [] };
-            appState.nutrition.goal.calories = Math.round(targetCals); appState.nutrition.goal.protein = Math.round(weight * 1.8); 
-            saveState(); document.getElementById('cal-calculator').classList.add('hidden'); renderNutrition(); playAudio('success');
-        }
-
-        function addMeal() {
-            playAudio('click');
-            const name = document.getElementById('meal-name').value.trim(); const cal = parseInt(document.getElementById('meal-cal').value); const pro = parseInt(document.getElementById('meal-pro').value);
-            if(!name || isNaN(cal)) { alert("Ingresa nombre y calorías."); return; }
-            if(!appState.nutrition.meals) appState.nutrition.meals = [];
-            appState.nutrition.meals.push({ id: Date.now().toString(), name: name, cal: cal, pro: isNaN(pro) ? 0 : pro });
-            saveState(); document.getElementById('meal-name').value = ''; document.getElementById('meal-cal').value = ''; document.getElementById('meal-pro').value = ''; renderNutrition(); playAudio('check');
-        }
-
-        function clearMeals() {
-            playAudio('click');
-            if(confirm("¿Borrar todos los registros de comida de hoy?")) { appState.nutrition.meals = []; saveState(); renderNutrition(); }
-        }
-
-        function deleteMeal(id) {
-            playAudio('click');
-            appState.nutrition.meals = appState.nutrition.meals.filter(m => m.id !== id); saveState(); renderNutrition();
-        }
-
-        function renderNutrition() {
-            if(!appState.nutrition || !appState.nutrition.goal) return;
-            const goalCal = appState.nutrition.goal.calories || 2000; const goalPro = appState.nutrition.goal.protein || 100;
-            document.getElementById('nutri-cal-goal').innerText = goalCal; document.getElementById('nutri-pro-goal').innerText = goalPro;
-            let currentCal = 0, currentPro = 0;
-            if(appState.nutrition.meals) { appState.nutrition.meals.forEach(m => { currentCal += (m.cal || 0); currentPro += (m.pro || 0); }); }
-            document.getElementById('nutri-cal-current').innerText = currentCal; document.getElementById('nutri-pro-current').innerText = currentPro;
-
-            let calPct = goalCal > 0 ? Math.min((currentCal / goalCal) * 100, 100) : 0; let proPct = goalPro > 0 ? Math.min((currentPro / goalPro) * 100, 100) : 0;
-            const barCal = document.getElementById('bar-calories'); const barPro = document.getElementById('bar-protein');
-            if(barCal) { barCal.style.width = calPct + '%'; if((currentCal / goalCal) > 1.05) barCal.className = 'h-full bg-gradient-to-r from-red-600 to-red-800 w-0 transition-all duration-700 shadow-[0_0_10px_rgba(220,38,38,0.5)]'; else barCal.className = 'h-full bg-gradient-to-r from-yellow-500 to-orange-500 w-0 transition-all duration-700 shadow-[0_0_10px_rgba(245,158,11,0.5)]'; }
-            if(barPro) { barPro.style.width = proPct + '%'; if(proPct >= 100) barPro.className = 'h-full bg-gradient-to-r from-emerald-400 to-emerald-600 w-0 transition-all duration-700 shadow-[0_0_10px_rgba(16,185,129,0.5)]'; else barPro.className = 'h-full bg-gradient-to-r from-blue-600 to-cyan-400 w-0 transition-all duration-700 shadow-[0_0_10px_rgba(56,189,248,0.5)]'; }
-
-            const list = document.getElementById('meals-list'); if(!list) return;
-            if(!appState.nutrition.meals || appState.nutrition.meals.length === 0) { list.innerHTML = '<div class="glass-card p-4 rounded-xl text-center text-xs text-gray-500 font-medium">Aún no hay registros hoy.</div>'; } 
-            else {
-                list.innerHTML = appState.nutrition.meals.map((m,i) => `
-                    <div class="glass-card p-4 rounded-xl flex justify-between items-center group relative overflow-hidden animate-slide-up" style="animation-delay: ${i*0.05}s">
-                        <span class="text-white text-sm font-bold pr-4 relative z-10 truncate">${m.name}</span>
-                        <div class="text-right flex items-center gap-3 relative z-10 flex-shrink-0">
-                            <div><span class="text-orange-400 font-bold text-sm block leading-none mb-1">${m.cal} kcal</span><span class="text-cyan-400 text-[10px] font-bold uppercase tracking-wider">${m.pro}g prot</span></div>
-                            <button onclick="deleteMeal('${m.id}')" class="text-gray-600 hover:text-red-500 p-2 cursor-pointer transition-colors bg-dark-500/50 rounded-lg"><i class="fas fa-trash-alt text-xs"></i></button>
-                        </div>
-                    </div>
-                `).join('');
-            }
-        }
-
-        // === INICIALIZACIÓN ===
-        document.addEventListener('DOMContentLoaded', () => {
-            loadState();
-            switchAppView('rutina');
-            renderRoutineNav(); renderRoutineContent(); updateProgressBar();
-        });
-    </script>
+    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script>
 </body>
 </html>
-
-
