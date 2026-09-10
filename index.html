@@ -1,153 +1,133 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gimnasio Profesional y Exclusivo</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <style>
-        /* Estilos personalizados */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #111;
-            color: #fff;
-        }
-        .cta-btn {
-            background-color: #00FF66;
-            border-color: #00FF66;
-        }
-        .cta-btn:hover {
-            background-color: #00e657;
-            border-color: #00e657;
-        }
-        .service-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 8px rgba(0, 255, 102, 0.5);
-        }
-        .pricing-table {
-            background-color: #1a1a1a;
-            border-color: #00FF66;
-        }
-        .pricing-table:hover {
-            border-color: #00e657;
-        }
-    </style>
-</head>
-<body class="bg-gray-900 text-white">
-    <header class="bg-gray-800">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="#" class="text-2xl font-bold">Gimnasio Pro</a>
-            <nav>
-                <ul class="flex space-x-6">
-                    <li><a href="#home" class="hover:text-gray-300">Inicio</a></li>
-                    <li><a href="#services" class="hover:text-gray-300">Servicios</a></li>
-                    <li><a href="#plans" class="hover:text-gray-300">Planes</a></li>
-                    <li><a href="#contact" class="hover:text-gray-300">Contacto</a></li>
-                </ul>
-            </nav>
-            <a href="#contact" class="cta-btn py-2 px-4 rounded-full text-white hover:bg-green-700 border-2 border-green-700 transition duration-300">Empieza Hoy</a>
-        </div>
-    </header>
+¡Claro, aquí tienes una estructura básica para tu gimnasio profesional y exclusivo! Este es el código HTML5, CSS3 con Tailwind CSS mediante CDN, y JavaScript para la página web:
 
-    <section id="home" class="hero-section bg-cover bg-center py-20" style="background-image: url('https://source.unsplash.com/1600x900/?fitness,gym');">
-        <div class="container mx-auto px-4 text-center">
-            <h1 class="text-5xl font-bold mb-4">Transforma Tu Cuerpo, Transforma Tu Vida</h1>
-            <p class="text-xl mb-8">Únete a nuestra comunidad de expertos en fitness y alcanza tus objetivos de manera profesional.</p>
-            <form class="max-w-md mx-auto bg-gray-800 p-6 rounded-lg">
-                <h2 class="text-2xl font-bold mb-4">Solicita Tu Clase de Prueba Gratuita</h2>
-                <div class="mb-4">
-                    <label for="name" class="block text-sm font-medium mb-1">Nombre</label>
-                    <input type="text" id="name" class="w-full px-3 py-2 rounded bg-gray-700 text-white" required>
-                </div>
-                <div class="mb-4">
-                    <label for="email" class="block text-sm font-medium mb-1">Email</label>
-                    <input type="email" id="email" class="w-full px-3 py-2 rounded bg-gray-700 text-white" required>
-                </div>
-                <button type="submit" class="cta-btn py-2 px-4 rounded-full text-white hover:bg-green-700 border-2 border-green-700 transition duration-300">Solicitar</button>
-            </form>
-        </div>
-    </section>
+<!DOCTYPE html><html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Gimnasio Profesional</title> <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"> <style> /* Personalizado para este ejemplo */ .bg-dark { background-color: #111 !important; } .text-yellow { color: #FFC107 !important; } .text-green { color: #00FF66 !important; } .hover-bg-green { background-color: #00FF66 !important; } .hover-bg-yellow { background-color: #FFC107 !important; } </style> </head> <body> <header class="bg-dark text-white"> <nav class="container mx-auto"> <div class="flex items-center"> <div class="mr-4"> <img src="logo.png" alt="Logo" class="h-8 w-8 fill-current"> </div> <div class="hidden md:flex"> <a href="#" class="mr-4">Inicio</a> <a href="#" class="mr-4">Servicios</a> <a href="#" class="mr-4">Planes</a> <a href="#" class="mr-4">Contacto</a> </div> </div> <button class="bg-green hover-bg-green text-white hover:text-dark rounded py-2 px-4 ml-4">Empieza Hoy</button> </nav> </header>
+<section class="bg-dark text-white">
+    <div class="container mx-auto py-16">
+        <h1 class="text-5xl font-bold mb-4">Transformación Física</h1>
+        <h2 class="text-3xl font-bold mb-8">Solicita tu clase de prueba gratuita</h2>
+        <form class="flex items-center">
+            <input type="text" placeholder="Nombre" class="mr-4 py-2 px-4 bg-white text-dark rounded">
+            <input type="email" placeholder="Correo electrónico" class="mr-4 py-2 px-4 bg-white text-dark rounded">
+            <button type="submit" class="bg-yellow hover-bg-yellow text-white hover:text-dark rounded py-2 px-4 ml-4">Enviar</button>
+        </form>
+    </div>
+</section>
 
-    <section id="services" class="py-20">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold mb-12 text-center">Nuestros Servicios</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div class="service-card bg-gray-800 p-6 rounded-lg text-center hover:shadow-lg hover:scale-105 transition duration-300">
-                    <h3 class="text-2xl font-bold mb-4">Entrenamientos Personalizados</h3>
-                    <p class="text-lg">Obtén un programa de entrenamiento personalizado para tus metas específicas.</p>
-                </div>
-                <div class="service-card bg-gray-800 p-6 rounded-lg text-center hover:shadow-lg hover:scale-105 transition duration-300">
-                    <h3 class="text-2xl font-bold mb-4">Planes de Nutrición</h3>
-                    <p class="text-lg">Alimentación balanceada y profesional para ayudarte a alcanzar tus objetivos.</p>
-                </div>
-                <div class="service-card bg-gray-800 p-6 rounded-lg text-center hover:shadow-lg hover:scale-105 transition duration-300">
-                    <h3 class="text-2xl font-bold mb-4">Rutinas de Fuerza</h3>
-                    <p class="text-lg">Fortalece tu cuerpo con nuestras rutinas de fuerza intensivas y efectivas.</p>
-                </div>
-                <div class="service-card bg-gray-800 p-6 rounded-lg text-center hover:shadow-lg hover:scale-105 transition duration-300">
-                    <h3 class="text-2xl font-bold mb-4">Asesoría Online</h3>
-                    <p class="text-lg">Recibe asesoramiento personalizado desde la comodidad de tu casa.</p>
-                </div>
-            </div>
+<section class="container mx-auto py-16">
+    <h2 class="text-4xl font-bold mb-8">Servicios</h2>
+    <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="bg-dark text-white rounded p-6 hover:shadow-lg">
+            <h3 class="text-2xl font-bold mb-4">Entrenamientos Personalizados</h3>
+            <p>Experimenta una experiencia de entrenamiento exclusiva y personalizada para alcanzar tus objetivos de forma más eficiente.</p>
         </div>
-    </section>
-
-    <section id="plans" class="bg-gray-800 py-20">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold mb-12 text-center">Nuestros Planes</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="pricing-table bg-gray-900 p-8 rounded-lg text-center hover:border-green-700 transition duration-300">
-                    <h3 class="text-2xl font-bold mb-4">Básico</h3>
-                    <p class="text-4xl font-bold mb-8">$29/mes</p>
-                    <ul class="mb-8">
-                        <li>Acceso al gimnasio</li>
-                        <li>1 clase de entrenamiento personalizada</li>
-                    </ul>
-                    <a href="#contact" class="cta-btn py-2 px-4 rounded-full text-white hover:bg-green-700 border-2 border-green-700 transition duration-300">Inscribirme</a>
-                </div>
-                <div class="pricing-table bg-gray-900 p-8 rounded-lg text-center hover:border-green-700 transition duration-300">
-                    <h3 class="text-2xl font-bold mb-4">Pro</h3>
-                    <p class="text-4xl font-bold mb-8">$49/mes</p>
-                    <ul class="mb-8">
-                        <li>Acceso al gimnasio</li>
-                        <li>2 clases de entrenamiento personalizadas</li>
-                        <li>Plan de nutrición</li>
-                    </ul>
-                    <a href="#contact" class="cta-btn py-2 px-4 rounded-full text-white hover:bg-green-700 border-2 border-green-700 transition duration-300">Inscribirme</a>
-                </div>
-                <div class="pricing-table bg-gray-900 p-8 rounded-lg text-center hover:border-green-700 transition duration-300">
-                    <h3 class="text-2xl font-bold mb-4">VIP</h3>
-                    <p class="text-4xl font-bold mb-8">$69/mes</p>
-                    <ul class="mb-8">
-                        <li>Acceso al gimnasio</li>
-                        <li>3 clases de entrenamiento personalizadas</li>
-                        <li>Plan de nutrición</li>
-                        <li>Asesoría personalizada</li>
-                    </ul>
-                    <a href="#contact" class="cta-btn py-2 px-4 rounded-full text-white hover:bg-green-700 border-2 border-green-700 transition duration-300">Inscribirme</a>
-                </div>
-            </div>
+        <div class="bg-dark text-white rounded p-6 hover:shadow-lg">
+            <h3 class="text-2xl font-bold mb-4">Planes de Nutrición</h3>
+            <p>Recibirás una nutrición personalizada basada en tus objetivos y estilo de vida para obtener los mejores resultados.</p>
         </div>
-    </section>
-
-    <footer class="bg-gray-800 py-8">
-        <div class="container mx-auto px-4">
-            <div class="flex justify-between items-center">
-                <div class="text-center">
-                    <p class="mb-4">Gimnasio Profesional y Exclusivo</p>
-                    <p class="mb-2">Email: info@gimnasio.pro</p>
-                    <p class="mb-2">Teléfono: +57 311 4220852</p>
-                    <p class="mb-2">Dirección: Calle 123, Ciudad, País</p>
-                </div>
-                <div class="flex space-x-6">
-                    <a href="#" class="text-2xl hover:text-gray-300"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="text-2xl hover:text-gray-300"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="text-2xl hover:text-gray-300"><i class="fab fa-twitter"></i></a>
-                </div>
-            </div>
+        <div class="bg-dark text-white rounded p-6 hover:shadow-lg">
+            <h3 class="text-2xl font-bold mb-4">Rutinas de Fuerza</h3>
+            <p>Fortalece y tonifica tu cuerpo con nuestras rutinas de fuerza personalizadas y diseñadas para lograr resultados maximales.</p>
         </div>
-    </footer>
+        <div class="bg-dark text-white rounded p-6 hover:shadow-lg">
+            <h3 class="text-2xl font-bold mb-4">Asesoría Online</h3>
+            <p>Accede a asesoramiento personalizado y experto en línea para recibir orientación y apoyo en cualquier momento.</p>
+        </div>
+    </div>
+</section>
 
-    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script>
-</body>
-</html>
+<section class="container mx-auto py-16">
+    <h2 class="text-4xl font-bold mb-8">Planes de Tarifas</h2>
+    <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="bg-dark text-white rounded p-6 hover:shadow-lg">
+            <h3 class="text-2xl font-bold mb-4">Básico</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Descripción</th>
+                        <th>Precio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Acceso a la instalación</td>
+                        <td>$100</td>
+                    </tr>
+                    <tr>
+                        <td>Clases de grupó</td>
+                        <td>$50</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="bg-dark text-white rounded p-6 hover:shadow-lg">
+            <h3 class="text-2xl font-bold mb-4">Pro</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Descripción</th>
+                        <th>Precio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Acceso a la instalación</td>
+                        <td>$150</td>
+                    </tr>
+                    <tr>
+                        <td>Clases de grupó</td>
+                        <td>$75</td>
+                    </tr>
+                    <tr>
+                        <td>Clases privadas</td>
+                        <td>$100</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="bg-dark text-white rounded p-6 hover:shadow-lg">
+            <h3 class="text-2xl font-bold mb-4">VIP</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Descripción</th>
+                        <th>Precio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Acceso a la instalación</td>
+                        <td>$200</td>
+                    </tr>
+                    <tr>
+                        <td>Clases de grupó</td>
+                        <td>$100</td>
+                    </tr>
+                    <tr>
+                        <td>Clases privadas</td>
+                        <td>$150</td>
+                    </tr>
+                    <tr>
+                        <td>Asesoría personalizada</td>
+                        <td>$200</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<footer class="bg-dark text-white">
+    <div class="container mx-auto py-16 text-center">
+        <p>&copy; 2022 Gimnasio Profesional. Todos los derechos reservados.</p>
+        <div class="mt-4">
+            <a href="#" class="mr-2">Facebook</a>
+            <a href="#" class="mr-2">Instagram</a>
+            <a href="#" class="mr-2">Twitter</a>
+        </div>
+        <p>Horario de atención: Lunes a viernes de 9:00 a 20:00. Sábado 10:00 a 15:00.</p>
+        <p>Datos de contacto: <a href="#" class="text-white">correo@gimnasio.com</a> | Teléfono: (123) 456-7890</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.js"></script>
+</body> </html>
